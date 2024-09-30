@@ -1,31 +1,36 @@
-//
-//  ViewController.swift
-//  Collections
-//
-//  Created by Mac on 30.09.2024.
-//
 
 import UIKit
+import SnapKit
 
 class MainViewController: UIViewController {
-
+    
     private let tableView = UITableView()
     private let collections = ["Array", "Set", "Dictionary"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        setupUI()
+    }
+    
+    private func setupUI() {
+        setupNavigationBar()
         setupTableView()
     }
+    
+    private func setupNavigationBar() {
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.title = "Collections"
+        view.backgroundColor = .systemBackground
+    }
+    
     func setupTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        
         view.addSubview(tableView)
         tableView.snp.makeConstraints {
             $0.edges.equalToSuperview()
         }
         tableView.dataSource = self
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
     }
-    
 }
 
 extension MainViewController: UITableViewDataSource {
@@ -39,4 +44,3 @@ extension MainViewController: UITableViewDataSource {
     return cell
   }
 }
-

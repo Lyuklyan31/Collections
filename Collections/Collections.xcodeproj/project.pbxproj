@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		04F63BBE2CAAE66A001B4AB4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 04F63BBD2CAAE66A001B4AB4 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		04F63B9D2CAAE04A001B4AB4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04F63BBE2CAAE66A001B4AB4 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = Collections;
 			packageProductDependencies = (
+				04F63BBD2CAAE66A001B4AB4 /* SnapKit */,
 			);
 			productName = Collections;
 			productReference = 04F63B862CAAE047001B4AB4 /* Collections.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 04F63B7D2CAAE047001B4AB4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				04F63BBC2CAAE66A001B4AB4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 04F63B872CAAE047001B4AB4 /* Products */;
 			projectDirPath = "";
@@ -567,6 +576,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		04F63BBC2CAAE66A001B4AB4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		04F63BBD2CAAE66A001B4AB4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04F63BBC2CAAE66A001B4AB4 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 04F63B7E2CAAE047001B4AB4 /* Project object */;
 }
