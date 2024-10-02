@@ -5,11 +5,12 @@ class ArrayViewController: UIViewController {
   
     private let arrayService = ArrayService()
 
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    
     private var isArrayCreated = false
     private var randomNumber: Int
     private var buttonStates: [String]
     private var isEnabled: [Bool]
-
     
     init(_ randomNumber: Int) {
         self.randomNumber = randomNumber
@@ -47,23 +48,21 @@ class ArrayViewController: UIViewController {
     
     let buttonTitles = [
         "Create Int array with 10_000_000 elements",
+        
         "Insert 1000 elements at the beginning of the array one-by-one.",
         "Insert 1000 elements at the beginning of the array.",
         "Insert 1000 elements in the middle of the array one-by-one.",
         "Insert 1000 elements in the middle of the array.",
         "Insert 1000 elements at the end of the array one-by-one.",
         "Insert 1000 elements at the end of the array all at once.",
+        
         "Remove 1000 elements at the end of the array one-by-one.",
         "Remove 1000 elements at the end of the array.",
         "Remove 1000 elements at the begining of the array one-by-one.",
         "Remove 1000 elements at the begining of the array.",
         "Remove 1000 elements in the middle of the array one-by-one.",
-        "Remove 1000 elements in the middle of the array.",
-        "Remove 1000 elements at the end of the array one-by-one.",
-        "Remove 1000 elemebts at the end of the array."
+        "Remove 1000 elements in the middle of the array."
     ]
-    
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -133,12 +132,12 @@ extension ArrayViewController: UICollectionViewDataSource {
         
         cell.buttonAction = {
             Task {
+                
+                self.collectionView.isUserInteractionEnabled = false
                 cell.loading.startAnimating()
-                cell.button.isUserInteractionEnabled = false
                 cell.button.isHidden = true
                 
                 switch indexPath.item {
-                   
                    
                 case 0:
                     self.isArrayCreated = true
@@ -156,6 +155,12 @@ extension ArrayViewController: UICollectionViewDataSource {
                 case 4:
                     self.isEnabled[4] = false
                     self.buttonStates[4] = await self.arrayService.insertInMiddleArray()
+                case 5:
+                    self.isEnabled[5] = false
+                    self.buttonStates[5] = await self.arrayService.insertAtEndArrayOneByOne()
+                case 6:
+                    self.isEnabled[6] = false
+                    self.buttonStates[6] = await self.arrayService.insertAtEndArray()
                 default:
                     print("Action for button \(indexPath.item) not implemented")
                 }
@@ -163,6 +168,7 @@ extension ArrayViewController: UICollectionViewDataSource {
                 cell.loading.stopAnimating()
                 cell.button.isHidden = false
                 cell.button.isUserInteractionEnabled = true
+                self.collectionView.isUserInteractionEnabled = true
                 collectionView.reloadData()
             }
         }
