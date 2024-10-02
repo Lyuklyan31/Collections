@@ -62,6 +62,11 @@
 			path = CollectionsUITests;
 			sourceTree = "<group>";
 		};
+		04F63BD72CAB004B001B4AB4 /* ArraySetDictionary */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ArraySetDictionary;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +99,7 @@
 			isa = PBXGroup;
 			children = (
 				04F63B882CAAE047001B4AB4 /* Collections */,
+				04F63BD72CAB004B001B4AB4 /* ArraySetDictionary */,
 				04F63B9F2CAAE04A001B4AB4 /* CollectionsTests */,
 				04F63BA92CAAE04A001B4AB4 /* CollectionsUITests */,
 				04F63B872CAAE047001B4AB4 /* Products */,
@@ -127,6 +133,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				04F63B882CAAE047001B4AB4 /* Collections */,
+				04F63BD72CAB004B001B4AB4 /* ArraySetDictionary */,
 			);
 			name = Collections;
 			packageProductDependencies = (
