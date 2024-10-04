@@ -5,7 +5,7 @@ class ArrayCollectionViewCell: UICollectionViewCell {
     
     let button = UIButton(type: .system)
     var buttonAction: (() -> Void)?
-    var loading = UIActivityIndicatorView(style: .medium)
+    var loading = UIActivityIndicatorView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -17,9 +17,10 @@ class ArrayCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupSubViews() {
-        
         contentView.addSubview(loading)
+        loading.style = .medium
         loading.hidesWhenStopped = true
+        
         loading.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.height.width.equalTo(100)
@@ -35,13 +36,12 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
-        button.isHidden = loading.isHidden == false
+        button.isHidden = !loading.isHidden
     }
 
     
     @objc private func buttonTapped() {
-        button.isUserInteractionEnabled = false
-        button.setTitleColor(.black, for: .normal)  
+        button.setTitleColor(.black, for: .disabled)
         buttonAction?()
     }
 }

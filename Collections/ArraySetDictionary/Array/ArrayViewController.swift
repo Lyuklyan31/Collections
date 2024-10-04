@@ -4,18 +4,14 @@ import SnapKit
 class ArrayViewController: UIViewController {
   
     private let arrayService = ArrayService()
-
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var isArrayCreated = false
     private var randomNumber: Int
-    private var buttonStates: [String]
-    private var isEnabled: [Bool]
+    private var result: String = ""
     
     init(_ randomNumber: Int) {
         self.randomNumber = randomNumber
-        self.buttonStates = Array(repeating: "", count: buttonTitles.count)
-        self.isEnabled = Array(repeating: true, count: buttonTitles.count)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -27,7 +23,6 @@ class ArrayViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupCollectionView()
-        buttonStates = buttonTitles
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -45,24 +40,6 @@ class ArrayViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = "Arrays: \(randomNumber)"
     }
-    
-    let buttonTitles = [
-        "Create Int array with 10_000_000 elements",
-        
-        "Insert 1000 elements at the beginning of the array one-by-one.",
-        "Insert 1000 elements at the beginning of the array.",
-        "Insert 1000 elements in the middle of the array one-by-one.",
-        "Insert 1000 elements in the middle of the array.",
-        "Insert 1000 elements at the end of the array one-by-one.",
-        "Insert 1000 elements at the end of the array all at once.",
-        
-        "Remove 1000 elements at the end of the array one-by-one.",
-        "Remove 1000 elements at the end of the array.",
-        "Remove 1000 elements at the begining of the array one-by-one.",
-        "Remove 1000 elements at the begining of the array.",
-        "Remove 1000 elements in the middle of the array one-by-one.",
-        "Remove 1000 elements in the middle of the array."
-    ]
     
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -104,7 +81,7 @@ extension ArrayViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return isArrayCreated ? buttonTitles.count : 1
+        return isArrayCreated ? Buttons.allCases.count : 1
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -120,58 +97,33 @@ extension ArrayViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
         
-        cell.button.setTitle(buttonStates[indexPath.item], for: .normal)
+        let buttons = Buttons.allCases[indexPath.item]
         
-        if isEnabled[indexPath.item] == false {
-            cell.button.isUserInteractionEnabled = false
-            cell.button.setTitleColor(.black, for: .normal)
-        } else {
-            cell.button.isUserInteractionEnabled = true
-            cell.button.setTitleColor(.systemBlue, for: .normal)
-        }
+        cell.button.setTitle(buttons.title, for: .normal)
         
         cell.buttonAction = {
             Task {
-                
-                self.collectionView.isUserInteractionEnabled = false
+        
                 cell.loading.startAnimating()
                 cell.button.isHidden = true
                 
-                switch indexPath.item {
-                   
-                case 0:
-                    self.isArrayCreated = true
-                    self.isEnabled[0] = false
-                    self.buttonStates[0] = await self.arrayService.createArray()
-                case 1:
-                    self.isEnabled[1] = false
-                    self.buttonStates[1] = await self.arrayService.insertAtBeginningArrayOneByOne()
-                case 2:
-                    self.isEnabled[2] = false
-                    self.buttonStates[2] = await self.arrayService.insertAtBeginningArray()
-                case 3:
-                    self.isEnabled[3] = false
-                    self.buttonStates[3] = await self.arrayService.insertInMiddleArrayOneByOne()
-                case 4:
-                    self.isEnabled[4] = false
-                    self.buttonStates[4] = await self.arrayService.insertInMiddleArray()
-                case 5:
-                    self.isEnabled[5] = false
-                    self.buttonStates[5] = await self.arrayService.insertAtEndArrayOneByOne()
-                case 6:
-                    self.isEnabled[6] = false
-                    self.buttonStates[6] = await self.arrayService.insertAtEndArray()
-                default:
-                    print("Action for button \(indexPath.item) not implemented")
-                }
+                self.result = await buttons.perform(using: self.arrayService)
+                cell.button.setTitle(self.result, for: .normal)
                 
                 cell.loading.stopAnimating()
                 cell.button.isHidden = false
-                cell.button.isUserInteractionEnabled = true
-                self.collectionView.isUserInteractionEnabled = true
-                collectionView.reloadData()
+                
+                
+            }
+            if self.isArrayCreated == false {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.7) {
+                    self.isArrayCreated = true
+                    collectionView.reloadData()
+                    cell.button.setTitle(self.result, for: .normal)
+                }
             }
         }
+        
         
         cell.button.titleLabel?.numberOfLines = 0
         cell.button.titleLabel?.textAlignment = .left
@@ -180,5 +132,59 @@ extension ArrayViewController: UICollectionViewDataSource {
         cell.layer.borderColor = UIColor.black.cgColor
         
         return cell
+    }
+}
+
+enum Buttons: CaseIterable {
+    case createArray
+    case insertAtBeginningOneByOne
+    case insertAtBeginning
+    case insertInMiddleOneByOne
+    case insertInMiddle
+    case insertAtEndOneByOne
+    case insertAtEnd
+//    case removeAtEndOneByOne(count: Int)
+//    case removeAtEnd(count: Int)
+//    case removeAtBeginningOneByOne(count: Int)
+//    case removeAtBeginning(count: Int)
+//    case removeInMiddleOneByOne(count: Int)
+//    case removeInMiddle(count: Int)
+    
+    var title: String {
+        switch self {
+        case .createArray:
+            return "Create Int array with 10,000,000 elements"
+        case .insertAtBeginningOneByOne:
+            return "Insert 1000 elements at the beginning of the array one-by-one."
+        case .insertAtBeginning:
+            return "Insert 1000 elements at the beginning of the array."
+        case .insertInMiddleOneByOne:
+            return "Insert 1000 elements in the middle of the array one-by-one."
+        case .insertInMiddle:
+            return "Insert 1000 elements in the middle of the array."
+        case .insertAtEndOneByOne:
+            return "Insert 1000 elements at the end of the array one-by-one."
+        case .insertAtEnd:
+            return "Insert 1000 elements at the end of the array all at once."
+        }
+    }
+    
+    func perform(using service: ArrayService) async -> String {
+        switch self {
+        case .createArray:
+            return await service.createArray()
+        case .insertAtBeginningOneByOne:
+            return await service.insertAtBeginningArrayOneByOne()
+        case .insertAtBeginning:
+            return await service.insertAtBeginningArray()
+        case .insertInMiddleOneByOne:
+            return await service.insertInMiddleArrayOneByOne()
+        case .insertInMiddle:
+            return await service.insertInMiddleArray()
+        case .insertAtEndOneByOne:
+            return await service.insertAtEndArrayOneByOne()
+        case .insertAtEnd:
+            return await service.insertAtEndArray()
+        }
     }
 }
