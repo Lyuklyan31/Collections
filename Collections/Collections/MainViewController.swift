@@ -63,8 +63,8 @@ extension MainViewController: UITableViewDelegate {
         
         switch selectedCollection {
         case "Array":
-            let randomNumber = Int.random(in: 0...9_999_999)
-            destinationVC = ArrayViewController(randomNumber)
+            let title = ("Array:\(Int.random(in: 0...9_999_999))")
+            destinationVC = ArrayViewController(title)
         case "Set":
             destinationVC = SetViewController()
         case "Dictionary":
