@@ -125,107 +125,112 @@ class ArrayService {
         return "Insertion time: \(formattedTime) ms."
     }
     
-    //    // MARK: - Remove at the Beginning One-by-One
-    //    func removeAtBeginningArrayOneByOne() async -> String {
-    //        var array = myArray
-    //        let startTime = DispatchTime.now()
-    //
-    //        for number in 1...1000 {
-    //            array.remove(at: number)
-    //        }
-    //        let endTime = DispatchTime.now()
-    //
-    //        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-    //        let seconds = Double(nanoseconds) / 1_000_000_000
-    //
-    //        let formattedTime = String(format: "%.3f", seconds)
-    //
-    //        return "Insertion time: \(formattedTime) ms."
-    //    }
-    //
-    //    // MARK: - Remove at the Beginning All at Once
-    //    func removeAtBeginningArray() async -> String {
-    //        var array = myArray
-    //        let startTime = DispatchTime.now()
-    //
-    //        array.insert(contentsOf: 1...1000, at: 0)
-    //
-    //        let endTime = DispatchTime.now()
-    //        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-    //        let seconds = Double(nanoseconds) / 1_000_000_000
-    //
-    //        let formattedTime = String(format: "%.3f", seconds)
-    //
-    //        return "Insertion time: \(formattedTime) ms."
-    //    }
-    //
-    //    // MARK: - Remove in the Middle One-by-One
-    //    func removeInMiddleArrayOneByOne() async -> String {
-    //        var array = myArray
-    //        let startTime = DispatchTime.now()
-    //
-    //        for number in 1...1000 {
-    //            array.insert(number, at: 4_999_999)
-    //        }
-    //        let endTime = DispatchTime.now()
-    //
-    //        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-    //        let seconds = Double(nanoseconds) / 1_000_000_000
-    //
-    //        let formattedTime = String(format: "%.3f", seconds)
-    //
-    //        return "Insertion time: \(formattedTime) ms."
-    //    }
-    //
-    //    // MARK: - Remove in the Middle All at Once
-    //    func removeInMiddleArray() async -> String {
-    //        var array = myArray
-    //        let startTime = DispatchTime.now()
-    //
-    //        array.insert(contentsOf: 1...1000, at: 4_999_999)
-    //
-    //        let endTime = DispatchTime.now()
-    //        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-    //        let seconds = Double(nanoseconds) / 1_000_000_000
-    //
-    //        let formattedTime = String(format: "%.3f", seconds)
-    //
-    //        return "Insertion time: \(formattedTime) ms."
-    //    }
-    //
-    //    // MARK: - Remove at the End One-by-One
-    //    func removeAtEndArrayOneByOne() async -> String {
-    //        var array = myArray
-    //        let startTime = DispatchTime.now()
-    //
-    //        for number in 1...1000 {
-    //            array.insert(number, at: 9_999_999)
-    //        }
-    //        let endTime = DispatchTime.now()
-    //
-    //        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-    //        let seconds = Double(nanoseconds) / 1_000_000_000
-    //
-    //        let formattedTime = String(format: "%.3f", seconds)
-    //
-    //        return "Insertion time: \(formattedTime) ms."
-    //    }
-    //
-    //    // MARK: - Remove at the End All at Once
-    //    func removeAtEndArray() async -> String {
-    //        var array = myArray
-    //        let startTime = DispatchTime.now()
-    //
-    //        array.insert(contentsOf: 1...1000, at: 9_999_999)
-    //
-    //        let endTime = DispatchTime.now()
-    //
-    //        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-    //        let seconds = Double(nanoseconds) / 1_000_000_000
-    //
-    //        let formattedTime = String(format: "%.3f", seconds)
-    //
-    //        return "Insertion time: \(formattedTime) ms."
-    //    }
-    //}
+    // MARK: - Remove at the Beginning One-by-One
+    func removeAtBeginningArrayOneByOne() async -> String {
+        var array = myArray
+        let startTime = DispatchTime.now()
+        
+        for _ in 1...1000 {
+            array.remove(at: 0)
+        }
+        let endTime = DispatchTime.now()
+        
+        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let seconds = Double(nanoseconds) / 1_000_000_000
+        
+        let formattedTime = String(format: "%.3f", seconds)
+        
+        return "Insertion time: \(formattedTime) ms."
+    }
+    
+    // MARK: - Remove at the Beginning All at Once
+    func removeAtBeginningArray() async -> String {
+        var array = myArray
+        let startTime = DispatchTime.now()
+        
+        array.removeFirst(1000)
+        
+        let endTime = DispatchTime.now()
+        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let seconds = Double(nanoseconds) / 1_000_000_000
+        
+        let formattedTime = String(format: "%.3f", seconds)
+        
+        return "Insertion time: \(formattedTime) ms."
+    }
+    
+    // MARK: - Remove in the Middle One-by-One
+    func removeInMiddleArrayOneByOne() async -> String {
+        var array = myArray
+        let startTime = DispatchTime.now()
+        
+        for _ in 0..<1000 {
+            let middleIndex = array.count / 2
+            array.remove(at: middleIndex)
+        }
+        let endTime = DispatchTime.now()
+        
+        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let seconds = Double(nanoseconds) / 1_000_000_000
+        let formattedTime = String(format: "%.3f", seconds)
+        
+        return "Removal time: \(formattedTime) seconds."
+    }
+    
+    // MARK: - Remove in the Middle All at Once
+    func removeInMiddleArray() async -> String {
+        var array = myArray
+        let startTime = DispatchTime.now()
+        
+        let middleIndex = array.count / 2
+        
+        let startRemoveIndex = max(0, middleIndex - 500)
+        
+        let endIndex = min(array.count, startRemoveIndex + 1000)
+        array.removeSubrange(startRemoveIndex..<endIndex)
+        
+        let endTime = DispatchTime.now()
+        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let seconds = Double(nanoseconds) / 1_000_000_000
+        
+        let formattedTime = String(format: "%.3f", seconds)
+        
+        return "Removal time: \(formattedTime) seconds."
+    }
+    
+    
+    // MARK: - Remove at the End One-by-One
+    func removeAtEndArrayOneByOne() async -> String {
+        var array = myArray
+        let startTime = DispatchTime.now()
+        
+        for _ in 1...1000 {
+            array.removeLast()
+        }
+        let endTime = DispatchTime.now()
+        
+        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let seconds = Double(nanoseconds) / 1_000_000_000
+        
+        let formattedTime = String(format: "%.3f", seconds)
+        
+        return "Insertion time: \(formattedTime) ms."
+    }
+    
+    // MARK: - Remove at the End All at Once
+    func removeAtEndArray() async -> String {
+        var array = myArray
+        let startTime = DispatchTime.now()
+
+        array.removeLast(1000)
+
+        let endTime = DispatchTime.now()
+        
+        let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+        let seconds = Double(nanoseconds) / 1_000_000_000
+        
+        let formattedTime = String(format: "%.3f", seconds)
+        
+        return "Removal time: \(formattedTime) seconds."
+    }
 }
