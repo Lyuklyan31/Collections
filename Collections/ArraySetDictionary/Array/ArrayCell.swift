@@ -35,12 +35,12 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         }
         
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        
         button.isHidden = !loading.isHidden
     }
 
     
     @objc private func buttonTapped() {
+        button.isEnabled = false
         button.setTitleColor(.black, for: .disabled)
         buttonAction?()
     }
