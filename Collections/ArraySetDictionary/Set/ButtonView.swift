@@ -1,6 +1,6 @@
 import UIKit
 
-class SetButtonView: UIView {
+class ButtonView: UIView {
     
     // MARK: - UI Elements
     let button = UIButton(type: .system)
@@ -30,6 +30,8 @@ class SetButtonView: UIView {
     // MARK: - Setup Button
     private func setupButton() {
         button.setTitle(title, for: .normal)
+        button.titleLabel?.numberOfLines = 0
+        button.titleLabel?.textAlignment = .center
         
         addSubview(button)
         button.snp.makeConstraints {
@@ -44,6 +46,7 @@ class SetButtonView: UIView {
         resultLabel.text = ""
         resultLabel.textAlignment = .center
         resultLabel.isHidden = true
+        resultLabel.numberOfLines = 0
         
         addSubview(resultLabel)
         resultLabel.snp.makeConstraints {

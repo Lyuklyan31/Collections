@@ -5,7 +5,7 @@ class SetViewController: UIViewController {
     private let noDigitsViewFirst = NoDigitsView()
     private let noDigitsViewSecond = NoDigitsView()
     
-    private let setButtonView = SetButtonView("All maatching letters")
+    private let stackView = UIStackView()
     
     private var titleSetViewController: String
     
@@ -22,7 +22,7 @@ class SetViewController: UIViewController {
         super.viewDidLoad()
         setupNavigationBar()
         setupNoDigitsView()
-        setupFirstButton()
+        setupFindMatchesView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -62,27 +62,31 @@ class SetViewController: UIViewController {
         }
     }
     
-    private func setupFirstButton() {
-        view.addSubview(setButtonView)
+    private func setupFindMatchesView() {
+        stackView.axis = .vertical
+        stackView.spacing = 16
+        stackView.translatesAutoresizingMaskIntoConstraints = false
         
-        setButtonView.snp.makeConstraints {
-            $0.centerX.equalToSuperview()
+        view.addSubview(stackView)
+        
+        stackView.snp.makeConstraints {
+            $0.horizontalEdges.equalToSuperview().inset(16)
             $0.top.equalTo(noDigitsViewSecond.snp.bottom).offset(32)
         }
-        
-        self.setButtonView.buttonAction = {
-            
-            let firstText = self.noDigitsViewFirst.textField.text ?? ""
-            let secondText = self.noDigitsViewSecond.textField.text ?? ""
-            
-            let firstSet = Set(firstText)
-            let secondSet = Set(secondText)
-            
-            let resultText = String(firstSet.intersection(secondSet))
-            
-            self.setButtonView.resultLabel.isHidden = false
-            self.setButtonView.resultLabel.text = resultText.isEmpty ? "" : String(resultText)
-        }
 
+        for buttonType in SetButtons.allCases {
+            let button = ButtonView(buttonType.title)
+            stackView.addArrangedSubview(button)
+            
+            button.buttonAction = {
+                let firstText = self.noDigitsViewFirst.textField.text ?? ""
+                let secondText = self.noDigitsViewSecond.textField.text ?? ""
+                
+                let resultText = buttonType.perform(using: button, firstText: firstText, secondText: secondText)
+                
+                button.resultLabel.isHidden = false
+                button.resultLabel.text = resultText.isEmpty ? "" : resultText
+            }
+        }
     }
 }
