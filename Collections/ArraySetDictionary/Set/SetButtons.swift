@@ -32,11 +32,18 @@ enum SetButtons: CaseIterable {
     
     // MARK: - Finding Matching Letters
     private func findMatchingLetters(firstText: String, secondText: String) -> String {
-        let firstSet = Set(firstText)
         let secondSet = Set(secondText)
-        let matchingCharacters = firstSet.intersection(secondSet)
-        return String(matchingCharacters)
+        var resultText = ""
+
+        for char in firstText {
+            if secondSet.contains(char) {
+                resultText.append(char)
+            }
+        }
+        
+        return resultText
     }
+
 
     // MARK: - Finding Non-Matching Letters
     private func findNonMatchingLetters(firstText: String, secondText: String) -> String {
