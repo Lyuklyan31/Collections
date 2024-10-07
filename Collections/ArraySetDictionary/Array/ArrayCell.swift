@@ -1,12 +1,14 @@
 import UIKit
 import SnapKit
 
+// MARK: - ArrayCollectionViewCell
 class ArrayCollectionViewCell: UICollectionViewCell {
     
-    let button = UIButton(type: .system)
+    let button = UIButton()
     var buttonAction: (() -> Void)?
     var loading = UIActivityIndicatorView()
     
+    // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSubViews()
@@ -16,6 +18,7 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Setup Subviews
     private func setupSubViews() {
         contentView.addSubview(loading)
         loading.style = .medium
@@ -27,6 +30,8 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         }
         
         contentView.addSubview(button)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         
         button.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(8)
@@ -37,8 +42,8 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         button.isHidden = !loading.isHidden
     }
-
     
+    // MARK: - Button Action
     @objc private func buttonTapped() {
         button.isEnabled = false
         button.setTitleColor(.black, for: .disabled)

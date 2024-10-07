@@ -1,16 +1,20 @@
 import UIKit
 import SnapKit
 
+// MARK: - MainViewController
 class MainViewController: UIViewController {
     
+    // MARK: - Properties
     private let tableView = UITableView()
     private let collections = ["Array", "Set", "Dictionary"]
     
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
     }
 
+    // MARK: - UI Setup
     private func setupUI() {
         setupNavigationBar()
         setupTableView()
@@ -22,7 +26,6 @@ class MainViewController: UIViewController {
             appearance.configureWithDefaultBackground()
             navigationBar.standardAppearance = appearance
         }
-        navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.prefersLargeTitles = true
         view.backgroundColor = .systemBackground
         title = "Collections"
@@ -40,6 +43,7 @@ class MainViewController: UIViewController {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return collections.count
@@ -54,6 +58,7 @@ extension MainViewController: UITableViewDataSource {
     }
 }
 
+// MARK: - UITableViewDelegate
 extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
@@ -63,7 +68,7 @@ extension MainViewController: UITableViewDelegate {
         
         switch selectedCollection {
         case "Array":
-            let title = ("Array:\(Int.random(in: 0...9_999_999))")
+            let title = ("Array: \(Int.random(in: 0...9_999_999))")
             destinationVC = ArrayViewController(title)
         case "Set":
             destinationVC = SetViewController()

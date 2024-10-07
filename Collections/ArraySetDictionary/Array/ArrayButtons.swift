@@ -1,5 +1,6 @@
 import Foundation
 
+// MARK: - Buttons Enum
 enum Buttons: CaseIterable {
     case createArray
     case insertAtBeginningOneByOne
@@ -15,6 +16,7 @@ enum Buttons: CaseIterable {
     case removeInMiddleOneByOne
     case removeInMiddle
 
+    // MARK: - Titles
     var title: String {
         switch self {
         case .createArray:
@@ -36,9 +38,9 @@ enum Buttons: CaseIterable {
         case .removeAtEnd:
             return "Remove 1000 elements at the end of the array."
         case .removeAtBeginningOneByOne:
-            return "Remove 1000 elements at the begining of the array one-by-one."
+            return "Remove 1000 elements at the beginning of the array one-by-one."
         case .removeAtBeginning:
-            return "Remove 1000 elements at the begining of the array."
+            return "Remove 1000 elements at the beginning of the array."
         case .removeInMiddleOneByOne:
             return "Remove 1000 elements in the middle of the array one-by-one."
         case .removeInMiddle:
@@ -46,6 +48,7 @@ enum Buttons: CaseIterable {
         }
     }
     
+    // MARK: - Perform Actions
     func perform(using service: ArrayService) async -> String {
         switch self {
         case .createArray:

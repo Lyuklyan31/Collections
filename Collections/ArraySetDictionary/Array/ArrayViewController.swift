@@ -1,17 +1,19 @@
 import UIKit
 import SnapKit
 
+    // MARK: - ArrayViewController
 class ArrayViewController: UIViewController {
-  
+
+    // MARK: - Properties
     private let arrayService = ArrayService()
     
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var isArrayCreated = false
     private var titleArrayViewController: String
-    private var result: String = ""
     
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var dataSource: UICollectionViewDiffableDataSource<Int, Buttons>!
     
+    // MARK: - Initializer
     init(_ titleArrayViewController: String) {
         self.titleArrayViewController = titleArrayViewController
         super.init(nibName: nil, bundle: nil)
@@ -19,6 +21,13 @@ class ArrayViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle Methods
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.scrollEdgeAppearance = nil
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -30,15 +39,22 @@ class ArrayViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        configureDefaults()
     }
     
+    // MARK: - UI Setup
     private func setupUI() {
         setupNavigationBar()
         setupCollectionView()
+    }
+    
+    // MARK: - СonfigureDefaults
+    private func configureDefaults() {
         setupDataSource()
         applySnapshot()
     }
 
+    // MARK: - Navigation Bar Setup
     private func setupNavigationBar() {
         if let navigationBar = self.navigationController?.navigationBar {
             let appearance = UINavigationBarAppearance()
@@ -49,6 +65,7 @@ class ArrayViewController: UIViewController {
         title = titleArrayViewController
     }
     
+    // MARK: - Collection View Setup
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -70,6 +87,7 @@ class ArrayViewController: UIViewController {
         }
     }
     
+    // MARK: - Data Source Setup
     private func setupDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, Buttons>(collectionView: collectionView) { collectionView, indexPath, button in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArrayCell", for: indexPath) as? ArrayCollectionViewCell else {
@@ -80,8 +98,8 @@ class ArrayViewController: UIViewController {
             
             cell.buttonAction = {
                 Task {
-                    cell.loading.startAnimating()
                     cell.button.isHidden = true
+                    cell.loading.startAnimating()
                     
                     let result = await button.perform(using: self.arrayService)
                     cell.button.setTitle(result, for: .normal)
@@ -105,6 +123,7 @@ class ArrayViewController: UIViewController {
         }
     }
     
+    // MARK: - Snapshot Application
     private func applySnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<Int, Buttons>()
         snapshot.appendSections([0])
@@ -114,6 +133,7 @@ class ArrayViewController: UIViewController {
     }
 }
 
+    // MARK: - UICollectionViewDelegate and UICollectionViewDelegateFlowLayout
 extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionViewWidth = collectionView.bounds.width
@@ -127,4 +147,3 @@ extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegat
         }
     }
 }
-
