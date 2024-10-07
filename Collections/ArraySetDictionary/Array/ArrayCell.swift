@@ -36,7 +36,6 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         button.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(8)
             $0.verticalEdges.equalToSuperview()
-            $0.height.equalToSuperview()
         }
         
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)

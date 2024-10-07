@@ -5,7 +5,7 @@ class NoDigitsView: UIView {
     
     // MARK: - UI Elements
     
-    private let textField = UITextField()
+    let textField = UITextField()
     
     // MARK: - Initializers
     

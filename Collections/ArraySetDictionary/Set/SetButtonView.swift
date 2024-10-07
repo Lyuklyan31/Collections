@@ -1,8 +1,8 @@
 import UIKit
 
-class SetButton: UIView {
+class SetButtonView: UIView {
 
-    let button = UIButton()
+    let button = UIButton(type: .system)
     let resultLabel = UILabel()
     private let title: String
     
@@ -25,8 +25,6 @@ class SetButton: UIView {
     
     func setupButton() {
         button.setTitle(title, for: .normal)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         
         addSubview(button)
         button.snp.makeConstraints {
@@ -37,7 +35,6 @@ class SetButton: UIView {
     }
         
     func setupResultLabel() {
-        
         resultLabel.text = ""
         resultLabel.textAlignment = .center
         resultLabel.isHidden = true
