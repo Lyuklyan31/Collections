@@ -45,8 +45,6 @@ class ArrayCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Button Action
     @objc private func buttonTapped() {
-        button.isEnabled = false
-        button.setTitleColor(.black, for: .disabled)
         buttonAction?()
     }
 }

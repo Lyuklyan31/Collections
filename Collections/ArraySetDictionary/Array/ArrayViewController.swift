@@ -24,6 +24,13 @@ class ArrayViewController: UIViewController {
     }
     
     // MARK: - Lifecycle Methods
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        configureDefaults()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -34,12 +41,6 @@ class ArrayViewController: UIViewController {
         super.viewWillDisappear(animated)
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.scrollEdgeAppearance = nil
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupUI()
-        configureDefaults()
     }
     
     // MARK: - UI Setup
@@ -102,12 +103,17 @@ class ArrayViewController: UIViewController {
                     cell.loading.startAnimating()
                     
                     let result = await button.perform(using: self.arrayService)
-                    cell.button.setTitle(result, for: .normal)
+                    cell.button.setTitle(result, for: .disabled)
+                    
+                    if !result.isEmpty {
+                        cell.button.setTitleColor(.black, for: .disabled)
+                        cell.button.isEnabled = false
+                    }
                     
                     cell.loading.stopAnimating()
                     cell.button.isHidden = false
                     
-                    if self.isArrayCreated == false {
+                    if !self.isArrayCreated {
                         self.isArrayCreated = true
                         self.applySnapshot()
                     }
