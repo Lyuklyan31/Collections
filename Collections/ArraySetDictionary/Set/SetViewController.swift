@@ -2,13 +2,13 @@ import UIKit
 import SnapKit
 
 class SetViewController: UIViewController {
+    // MARK: - Properties
     private let noDigitsViewFirst = NoDigitsView()
     private let noDigitsViewSecond = NoDigitsView()
-    
     private let stackView = UIStackView()
-    
     private var titleSetViewController: String
     
+    // MARK: - Initializers
     init(_ titleSetViewController: String) {
         self.titleSetViewController = titleSetViewController
         super.init(nibName: nil, bundle: nil)
@@ -18,11 +18,11 @@ class SetViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
-        setupNoDigitsView()
-        setupFindMatchesView()
+        setupUI()
+        configureDefaults()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,6 +36,19 @@ class SetViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = nil
     }
     
+    // MARK: - SetupUI
+    private func setupUI() {
+        setupNavigationBar()
+        setupNoDigitsView()
+        setupFindMatchesStackView()
+    }
+    
+    // MARK: - Default Configuration
+    private func configureDefaults() {
+        setupGestures()
+    }
+    
+    // MARK: - Navigation Bar Setup
     private func setupNavigationBar() {
         if let navigationBar = self.navigationController?.navigationBar {
             let appearance = UINavigationBarAppearance()
@@ -46,7 +59,9 @@ class SetViewController: UIViewController {
         title = titleSetViewController
     }
     
+    // MARK: - No Digits View Setup
     private func setupNoDigitsView() {
+        // Adding the first NoDigitsView to the main view
         view.addSubview(noDigitsViewFirst)
         
         noDigitsViewFirst.snp.makeConstraints { make in
@@ -54,6 +69,7 @@ class SetViewController: UIViewController {
             make.top.equalTo(view.safeAreaLayoutGuide).offset(32)
         }
         
+        // Adding the second NoDigitsView to the main view
         view.addSubview(noDigitsViewSecond)
         
         noDigitsViewSecond.snp.makeConstraints { make in
@@ -62,7 +78,9 @@ class SetViewController: UIViewController {
         }
     }
     
-    private func setupFindMatchesView() {
+    // MARK: - Find Matches View Setup
+    private func setupFindMatchesStackView() {
+        // Configuring the stack view for buttons
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -74,10 +92,12 @@ class SetViewController: UIViewController {
             $0.top.equalTo(noDigitsViewSecond.snp.bottom).offset(32)
         }
 
+        // Adding buttons to the stack view
         for buttonType in SetButtons.allCases {
             let button = ButtonView(buttonType.title)
             stackView.addArrangedSubview(button)
             
+            // Setting up the button action
             button.buttonAction = {
                 let firstText = self.noDigitsViewFirst.textField.text ?? ""
                 let secondText = self.noDigitsViewSecond.textField.text ?? ""
