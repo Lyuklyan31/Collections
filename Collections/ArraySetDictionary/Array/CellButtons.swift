@@ -1,7 +1,7 @@
 import Foundation
 
 // MARK: - Buttons Enum
-enum Buttons: CaseIterable {
+enum CellButtons: CaseIterable {
     case createArray
     case insertAtBeginningOneByOne
     case insertAtBeginning
