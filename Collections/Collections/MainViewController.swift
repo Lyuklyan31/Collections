@@ -71,7 +71,8 @@ extension MainViewController: UITableViewDelegate {
             let title = ("Array: \(Int.random(in: 0...9_999_999))")
             destinationVC = ArrayViewController(title)
         case "Set":
-            destinationVC = SetViewController()
+            let title = ("Set: \(Int.random(in: 0...9_999_999))")
+            destinationVC = SetViewController(title)
         case "Dictionary":
             destinationVC = DictionaryViewController()
         default:
