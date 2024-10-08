@@ -1,10 +1,25 @@
 import Foundation
 
-// MARK: - ArrayService
 class ArrayService {
+    // MARK: - Properties
     var myArray = [Int]()
-    
-    // MARK: - Create Array with 10,000,000 elements
+    //Arrays for UnitTests
+    var createdArrayResults = [Int]()
+    var insertedAtBeginningOneByOneResults = [Int]()
+    var insertedAtBeginningAllAtOnceResults = [Int]()
+    var insertedInMiddleOneByOneResults = [Int]()
+    var insertedInMiddleAllAtOnceResults = [Int]()
+    var insertedAtEndOneByOneResults = [Int]()
+    var insertedAtEndAllAtOnceResults = [Int]()
+    var removedAtBeginningOneByOneResults = [Int]()
+    var removedAtBeginningAllAtOnceResults = [Int]()
+    var removedInMiddleOneByOneResults = [Int]()
+    var removedInMiddleAllAtOnceResults = [Int]()
+    var removedAtEndOneByOneResults = [Int]()
+    var removedAtEndAllAtOnceResults = [Int]()
+
+    // MARK: - Array Creation
+    @discardableResult
     func createArray() async -> String {
         let startTime = DispatchTime.now()
         
@@ -17,11 +32,12 @@ class ArrayService {
         let seconds = Double(nanoseconds) / 1_000_000_000
         
         let formattedTime = String(format: "%.3f", seconds)
+        createdArrayResults = myArray
         
         return "Array creation time: \(formattedTime) ms."
     }
-    
-    // MARK: - Insert at the Beginning (One-by-One)
+
+    // MARK: - Insert at Beginning
     func insertAtBeginningArrayOneByOne() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -30,16 +46,14 @@ class ArrayService {
             array.insert(number, at: 0)
         }
         let endTime = DispatchTime.now()
-        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
+        insertedAtBeginningOneByOneResults = array
         
-        return "Insertion time: \(formattedTime) ms."
+        return "Insertion time: \(seconds) ms."
     }
-    
-    // MARK: - Insert at the Beginning (All at Once)
+
     func insertAtBeginningArray() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -50,12 +64,12 @@ class ArrayService {
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
+        insertedAtBeginningAllAtOnceResults = array
         
-        return "Insertion time: \(formattedTime) ms."
+        return "Insertion time: \(seconds) ms."
     }
-    
-    // MARK: - Insert in the Middle (One-by-One)
+
+    // MARK: - Insert in Middle
     func insertInMiddleArrayOneByOne() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -65,15 +79,14 @@ class ArrayService {
         }
         let endTime = DispatchTime.now()
         
+        insertedInMiddleOneByOneResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Insertion time: \(formattedTime) ms."
+        return "Insertion time: \(seconds) ms."
     }
-    
-    // MARK: - Insert in the Middle (All at Once)
+
     func insertInMiddleArray() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -84,12 +97,12 @@ class ArrayService {
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
+        insertedInMiddleAllAtOnceResults = array
         
-        return "Insertion time: \(formattedTime) ms."
+        return "Insertion time: \(seconds) ms."
     }
-    
-    // MARK: - Insert at the End (One-by-One)
+
+    // MARK: - Insert at End
     func insertAtEndArrayOneByOne() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -99,15 +112,14 @@ class ArrayService {
         }
         let endTime = DispatchTime.now()
         
+        insertedAtEndOneByOneResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Insertion time: \(formattedTime) ms."
+        return "Insertion time: \(seconds) ms."
     }
-    
-    // MARK: - Insert at the End (All at Once)
+
     func insertAtEndArray() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -116,15 +128,15 @@ class ArrayService {
         
         let endTime = DispatchTime.now()
         
+        insertedAtEndAllAtOnceResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Insertion time: \(formattedTime) ms."
+        return "Insertion time: \(seconds) ms."
     }
-    
-    // MARK: - Remove at the Beginning (One-by-One)
+
+    // MARK: - Remove at Beginning
     func removeAtBeginningArrayOneByOne() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -134,15 +146,14 @@ class ArrayService {
         }
         let endTime = DispatchTime.now()
         
+        removedAtBeginningOneByOneResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Removal time: \(formattedTime) ms."
+        return "Removal time: \(seconds) ms."
     }
-    
-    // MARK: - Remove at the Beginning (All at Once)
+
     func removeAtBeginningArray() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -150,15 +161,15 @@ class ArrayService {
         array.removeFirst(1000)
         
         let endTime = DispatchTime.now()
+        removedAtBeginningAllAtOnceResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Removal time: \(formattedTime) ms."
+        return "Removal time: \(seconds) ms."
     }
-    
-    // MARK: - Remove in the Middle (One-by-One)
+
+    // MARK: - Remove in Middle
     func removeInMiddleArrayOneByOne() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -169,14 +180,14 @@ class ArrayService {
         }
         let endTime = DispatchTime.now()
         
+        removedInMiddleOneByOneResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
         
-        return "Removal time: \(formattedTime) ms."
+        return "Removal time: \(seconds) ms."
     }
-    
-    // MARK: - Remove in the Middle (All at Once)
+
     func removeInMiddleArray() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -188,15 +199,15 @@ class ArrayService {
         array.removeSubrange(startRemoveIndex..<endIndex)
         
         let endTime = DispatchTime.now()
+        removedInMiddleAllAtOnceResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Removal time: \(formattedTime) ms."
+        return "Removal time: \(seconds) ms."
     }
-    
-    // MARK: - Remove at the End (One-by-One)
+
+    // MARK: - Remove at End
     func removeAtEndArrayOneByOne() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
@@ -206,28 +217,26 @@ class ArrayService {
         }
         let endTime = DispatchTime.now()
         
+        removedAtEndOneByOneResults = array
+        
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Removal time: \(formattedTime) ms."
+        return "Removal time: \(seconds) ms."
     }
-    
-    // MARK: - Remove at the End (All at Once)
+
     func removeAtEndArray() async -> String {
         var array = myArray
         let startTime = DispatchTime.now()
-
+        
         array.removeLast(1000)
 
         let endTime = DispatchTime.now()
+        removedAtEndAllAtOnceResults = array
         
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
         
-        let formattedTime = String(format: "%.3f", seconds)
-        
-        return "Removal time: \(formattedTime) ms."
+        return "Removal time: \(seconds) ms."
     }
 }
