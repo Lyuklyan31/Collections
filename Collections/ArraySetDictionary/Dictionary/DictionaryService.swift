@@ -26,9 +26,9 @@ class DictionaryService {
         }
     }
     
-    func findContactByName(name: String) async -> String {
+    func findContactByNameInArray(name: String) async -> String {
         let startTime = DispatchTime.now()
-        var resultNumber: String = "Not found"
+        var resultNumber: String = "0"
         
         for contact in array {
             if contact.name == name {
@@ -36,7 +36,6 @@ class DictionaryService {
                 break
             }
         }
-
         let endTime = DispatchTime.now()
         let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
         let seconds = Double(nanoseconds) / 1_000_000_000
@@ -46,4 +45,18 @@ class DictionaryService {
         return "First element search time: \(formattedTime) ms. Result number: \(resultNumber)"
         
     }
+    
+    func findContactByNameInDictionary(name: String) async -> String {
+            let startTime = DispatchTime.now()
+           
+            let resultNumber = dictionary[name] ?? "0"
+            
+            let endTime = DispatchTime.now()
+            let nanoseconds = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
+            let seconds = Double(nanoseconds) / 1_000_000_000
+            
+            let formattedTime = String(format: "%.3f", seconds)
+            
+            return "Dictionary search time: \(formattedTime) ms. Result number: \(resultNumber)"
+        }
 }

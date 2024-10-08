@@ -4,13 +4,14 @@ import SnapKit
 // MARK: - CollectionViewCell
 class DictionaryCollectionViewCell: UICollectionViewCell {
     
-    let button = UIButton(type: .system)
+    let button = UIButton()
     var buttonAction: (() -> Void)?
+    var loading = UIActivityIndicatorView()
     
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupButton()
+        setupSubViews()
     }
     
     required init?(coder: NSCoder) {
@@ -18,8 +19,19 @@ class DictionaryCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Setup Button
-    private func setupButton() {
+    private func setupSubViews() {
+        contentView.addSubview(loading)
+        loading.style = .medium
+        loading.hidesWhenStopped = true
+        
+        loading.snp.makeConstraints {
+            $0.center.equalToSuperview()
+            $0.height.width.equalTo(100)
+        }
+        
         contentView.addSubview(button)
+        button.setTitleColor(.systemBlue, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         
         button.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(8)

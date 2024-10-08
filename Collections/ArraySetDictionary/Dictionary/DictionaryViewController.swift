@@ -43,6 +43,7 @@ class DictionaryViewController: UIViewController {
         setupNavigationBar()
         setupLabels()
         setupCollectionView()
+        setupLoading()
         creatingContacts()
     }
     
@@ -52,6 +53,11 @@ class DictionaryViewController: UIViewController {
             await dictionaryService.createContactsArray()
             await dictionaryService.createContactsDictionary()
             loading.stopAnimating()
+            
+            collectionView.isHidden = false
+            array.isHidden = false
+            dictionary.isHidden = false
+
         }
     }
 
@@ -69,11 +75,12 @@ class DictionaryViewController: UIViewController {
         view.addSubview(loading)
         loading.style = .medium
         loading.hidesWhenStopped = true
+        loading.isHidden = false
         view.backgroundColor = .systemBackground
         
         loading.snp.makeConstraints {
             $0.center.equalToSuperview()
-            $0.height.width.equalTo(100)
+            $0.height.width.equalTo(200)
         }
     }
     
@@ -82,6 +89,7 @@ class DictionaryViewController: UIViewController {
         array.font = .systemFont(ofSize: 17)
         array.textColor = .black
         array.textAlignment = .center
+        array.isHidden = true
         
         view.addSubview(array)
         array.snp.makeConstraints {
@@ -94,6 +102,7 @@ class DictionaryViewController: UIViewController {
         dictionary.font = .systemFont(ofSize: 17)
         dictionary.textColor = .black
         dictionary.textAlignment = .center
+        dictionary.isHidden = true
         
         view.addSubview(dictionary)
         dictionary.snp.makeConstraints {
@@ -112,6 +121,7 @@ class DictionaryViewController: UIViewController {
         
         collectionView.collectionViewLayout = layout
         collectionView.backgroundColor = .systemBackground
+        collectionView.isHidden = true
         
         collectionView.register(DictionaryCollectionViewCell.self, forCellWithReuseIdentifier: "DictionaryCell")
         collectionView.delegate = self
@@ -162,11 +172,24 @@ extension DictionaryViewController: UICollectionViewDataSource {
         
         cell.buttonAction = {
             Task {
+                cell.button.isHidden = true
+                cell.loading.startAnimating()
+                
                 let result = await buttons.perform(using: self.dictionaryService)
                 cell.button.setTitle(result, for: .normal)
+                
+                if !result.isEmpty {
+                    cell.button.setTitleColor(.black, for: .disabled)
+                    cell.button.isEnabled = false
+                }
+                cell.backgroundColor = .white
+                
+                cell.button.isHidden = false
+                cell.loading.stopAnimating()
             }
         }
         
+        cell.backgroundColor = .black.withAlphaComponent(0.1)
         cell.button.titleLabel?.numberOfLines = 0
         cell.button.titleLabel?.textAlignment = .left
         cell.layer.borderWidth = 0.2

@@ -39,7 +39,6 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         }
         
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-        button.isHidden = !loading.isHidden
     }
     
     // MARK: - Button Action

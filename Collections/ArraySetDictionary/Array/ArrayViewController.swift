@@ -109,6 +109,7 @@ class ArrayViewController: UIViewController {
                         cell.button.setTitleColor(.black, for: .disabled)
                         cell.button.isEnabled = false
                     }
+                    cell.backgroundColor = .white
                     
                     cell.loading.stopAnimating()
                     cell.button.isHidden = false
@@ -120,6 +121,7 @@ class ArrayViewController: UIViewController {
                 }
             }
             
+            cell.backgroundColor = .black.withAlphaComponent(0.1)
             cell.button.titleLabel?.numberOfLines = 0
             cell.button.titleLabel?.textAlignment = .left
             cell.layer.borderWidth = 0.2

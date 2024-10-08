@@ -78,7 +78,7 @@ class SetViewController: UIViewController {
         }
     }
     
-    // MARK: - Find Matches View Setup
+    // MARK: - Find Matches StackView Setup
     private func setupFindMatchesStackView() {
         // Configuring the stack view for buttons
         stackView.axis = .vertical
