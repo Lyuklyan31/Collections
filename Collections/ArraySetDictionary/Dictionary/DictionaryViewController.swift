@@ -1,8 +1,8 @@
-
 import UIKit
 import SwiftUI
 import SnapKit
 
+// MARK: - DictionaryViewController
 class DictionaryViewController: UIViewController {
   
     private let array = UILabel()
@@ -14,6 +14,7 @@ class DictionaryViewController: UIViewController {
     
     private var dictionaryService = DictionaryService()
     
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -39,6 +40,7 @@ class DictionaryViewController: UIViewController {
         navigationController?.navigationBar.scrollEdgeAppearance = nil
     }
     
+    // MARK: - UI Setup
     private func setupUI() {
         setupNavigationBar()
         setupLabels()
@@ -47,6 +49,7 @@ class DictionaryViewController: UIViewController {
         creatingContacts()
     }
     
+    // MARK: - Contact Creation
     private func creatingContacts() {
         Task {
             loading.startAnimating()
@@ -57,10 +60,10 @@ class DictionaryViewController: UIViewController {
             collectionView.isHidden = false
             array.isHidden = false
             dictionary.isHidden = false
-
         }
     }
 
+    // MARK: - Navigation Bar Setup
     private func setupNavigationBar() {
         if let navigationBar = self.navigationController?.navigationBar {
             let appearance = UINavigationBarAppearance()
@@ -71,6 +74,7 @@ class DictionaryViewController: UIViewController {
         title = titleDictionaryViewController
     }
     
+    // MARK: - Loading Indicator Setup
     private func setupLoading() {
         view.addSubview(loading)
         loading.style = .medium
@@ -84,6 +88,7 @@ class DictionaryViewController: UIViewController {
         }
     }
     
+    // MARK: - Labels Setup
     private func setupLabels() {
         array.text = "Array"
         array.font = .systemFont(ofSize: 17)
@@ -112,6 +117,7 @@ class DictionaryViewController: UIViewController {
         }
     }
     
+    // MARK: - Collection View Setup
     private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -136,6 +142,7 @@ class DictionaryViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension DictionaryViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let width = collectionView.bounds.width / 2
@@ -143,7 +150,7 @@ extension DictionaryViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
-
+// MARK: - UICollectionViewDataSource
 extension DictionaryViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
