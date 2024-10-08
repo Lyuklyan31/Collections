@@ -32,8 +32,7 @@ class DictionaryServiceTests: XCTestCase {
     func testFindContactInArray() async {
         await service.createContactsArray()
         let result = await service.findContactByNameInArray(name: "Contact 1")
-        
-        // Extract the result number
+      
         let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
         
         XCTAssertEqual(resultNumber, "123-456-781")
@@ -43,7 +42,6 @@ class DictionaryServiceTests: XCTestCase {
         await service.createContactsDictionary()
         let result = await service.findContactByNameInDictionary(name: "Contact 1")
         
-        // Extract the result number
         let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
         
         XCTAssertEqual(resultNumber, "123-456-781")
@@ -53,7 +51,6 @@ class DictionaryServiceTests: XCTestCase {
         await service.createContactsArray()
         let result = await service.findContactByNameInArray(name: "Contact 9999999")
         
-        // Extract the result number
         let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
         
         XCTAssertEqual(resultNumber, "123-456-789999999")
@@ -62,8 +59,7 @@ class DictionaryServiceTests: XCTestCase {
     func testFindLastContactInDictionary() async {
         await service.createContactsDictionary()
         let result = await service.findContactByNameInDictionary(name: "Contact 9999999")
-        
-        // Extract the result number
+       
         let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
         
         XCTAssertEqual(resultNumber, "123-456-789999999")
@@ -73,7 +69,6 @@ class DictionaryServiceTests: XCTestCase {
         await service.createContactsArray()
         let result = await service.findContactByNameInArray(name: "Contact 1 0000000")
         
-        // Extract the result number
         let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
         
         XCTAssertEqual(resultNumber, "0")
@@ -83,7 +78,6 @@ class DictionaryServiceTests: XCTestCase {
         await service.createContactsDictionary()
         let result = await service.findContactByNameInDictionary(name: "Contact 1 0000000")
         
-        // Extract the result number
         let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
         
         XCTAssertEqual(resultNumber, "0")

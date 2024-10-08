@@ -1,5 +1,5 @@
 import XCTest
-@testable import Collections 
+@testable import Collections
 
 class ArrayServiceTests: XCTestCase {
     var arrayService: ArrayService!
@@ -14,6 +14,8 @@ class ArrayServiceTests: XCTestCase {
         super.tearDown()
     }
 
+    // MARK: - Test Array Creation
+
     func testCreateArray() async throws {
         let result = await arrayService.createArray()
         XCTAssertEqual(arrayService.myArray.count, 10_000_000, "Expected array count of 10,000,000. Actual: \(arrayService.myArray.count)")
@@ -21,9 +23,10 @@ class ArrayServiceTests: XCTestCase {
         XCTAssertEqual(arrayService.createdArrayResults.count, 10_000_000, "Expected created array results count of 10,000,000.")
     }
 
+    // MARK: - Test Inserting at Beginning
+
     func testInsertAtBeginningArrayOneByOne() async throws {
         await arrayService.createArray()
-        
         let result = await arrayService.insertAtBeginningArrayOneByOne()
         
         XCTAssertEqual(arrayService.insertedAtBeginningOneByOneResults.count, 10_000_000 + 1000, "Expected array count after insertion. Actual: \(arrayService.insertedAtBeginningOneByOneResults.count)")
@@ -37,6 +40,8 @@ class ArrayServiceTests: XCTestCase {
         XCTAssertEqual(arrayService.insertedAtBeginningAllAtOnceResults.count, 10_000_000 + 1000, "Expected array count after insertion. Actual: \(arrayService.insertedAtBeginningAllAtOnceResults.count)")
         XCTAssertTrue(result.contains("Insertion time:"), "Unexpected result format: \(result)")
     }
+
+    // MARK: - Test Inserting in Middle
 
     func testInsertInMiddleArrayOneByOne() async throws {
         await arrayService.createArray()
@@ -54,6 +59,8 @@ class ArrayServiceTests: XCTestCase {
         XCTAssertTrue(result.contains("Insertion time:"), "Unexpected result format: \(result)")
     }
 
+    // MARK: - Test Inserting at End
+
     func testInsertAtEndArrayOneByOne() async throws {
         await arrayService.createArray()
         let result = await arrayService.insertAtEndArrayOneByOne()
@@ -69,6 +76,8 @@ class ArrayServiceTests: XCTestCase {
         XCTAssertEqual(arrayService.insertedAtEndAllAtOnceResults.count, 10_000_000 + 1000, "Expected array count after insertion. Actual: \(arrayService.insertedAtEndAllAtOnceResults.count)")
         XCTAssertTrue(result.contains("Insertion time:"), "Unexpected result format: \(result)")
     }
+
+    // MARK: - Test Removing at Beginning
 
     func testRemoveAtBeginningArrayOneByOne() async throws {
         await arrayService.createArray()
@@ -86,6 +95,8 @@ class ArrayServiceTests: XCTestCase {
         XCTAssertTrue(result.contains("Removal time:"), "Unexpected result format: \(result)")
     }
 
+    // MARK: - Test Removing in Middle
+
     func testRemoveInMiddleArrayOneByOne() async throws {
         await arrayService.createArray()
         let result = await arrayService.removeInMiddleArrayOneByOne()
@@ -101,6 +112,8 @@ class ArrayServiceTests: XCTestCase {
         XCTAssertEqual(arrayService.removedInMiddleAllAtOnceResults.count, 10_000_000 - 1000, "Expected array count after removal. Actual: \(arrayService.removedInMiddleAllAtOnceResults.count)")
         XCTAssertTrue(result.contains("Removal time:"), "Unexpected result format: \(result)")
     }
+
+    // MARK: - Test Removing at End
 
     func testRemoveAtEndArrayOneByOne() async throws {
         await arrayService.createArray()
