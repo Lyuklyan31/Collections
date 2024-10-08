@@ -90,10 +90,11 @@ class SetViewController: UIViewController {
         stackView.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(16)
             $0.top.equalTo(noDigitsViewSecond.snp.bottom).offset(32)
+            $0.bottom.lessThanOrEqualToSuperview()
         }
 
         // Adding buttons to the stack view
-        for buttonType in SetButtons.allCases {
+        for buttonType in Buttons.allCases {
             let button = ButtonView(buttonType.title)
             stackView.addArrangedSubview(button)
             

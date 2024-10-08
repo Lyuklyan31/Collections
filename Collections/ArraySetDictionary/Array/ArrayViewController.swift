@@ -11,7 +11,7 @@ class ArrayViewController: UIViewController {
     private var titleArrayViewController: String
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var dataSource: UICollectionViewDiffableDataSource<Int, CellButtons>!
+    private var dataSource: UICollectionViewDiffableDataSource<Int, CellSetButtons>!
     
     // MARK: - Initializer
     init(_ titleArrayViewController: String) {
@@ -90,7 +90,7 @@ class ArrayViewController: UIViewController {
     
     // MARK: - Data Source Setup
     private func setupDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Int, CellButtons>(collectionView: collectionView) { collectionView, indexPath, button in
+        dataSource = UICollectionViewDiffableDataSource<Int, CellSetButtons>(collectionView: collectionView) { collectionView, indexPath, button in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArrayCell", for: indexPath) as? ArrayCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -131,9 +131,9 @@ class ArrayViewController: UIViewController {
     
     // MARK: - Snapshot Application
     private func applySnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, CellButtons>()
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CellSetButtons>()
         snapshot.appendSections([0])
-        let items = isArrayCreated ? CellButtons.allCases : [.createArray]
+        let items = isArrayCreated ? CellSetButtons.allCases : [.createArray]
         snapshot.appendItems(items, toSection: 0)
         dataSource.apply(snapshot, animatingDifferences: true)
     }

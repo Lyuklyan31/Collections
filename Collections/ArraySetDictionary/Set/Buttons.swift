@@ -1,4 +1,4 @@
-enum SetButtons: CaseIterable {
+enum Buttons: CaseIterable {
     // MARK: - Button Cases
     case matchingLetters
     case nonMatchingLetters
