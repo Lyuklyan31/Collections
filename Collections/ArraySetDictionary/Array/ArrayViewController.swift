@@ -1,22 +1,19 @@
 import UIKit
 import SnapKit
 
-    // MARK: - ArrayViewController
+// MARK: - ArrayViewController
 class ArrayViewController: UIViewController {
-
-    // MARK: - Properties
-    private let arrayService = ArrayService()
     
-    private var isArrayCreated = false
-    private var titleArrayViewController: String
+    // MARK: - Properties
+    private var viewModel = ArrayViewModel()
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var dataSource: UICollectionViewDiffableDataSource<Int, CellSetButtons>!
+    private var dataSource: UICollectionViewDiffableDataSource<Int, CellButtons>!
     
     // MARK: - Initializer
-    init(_ titleArrayViewController: String) {
-        self.titleArrayViewController = titleArrayViewController
+    init(_ title: String) {
         super.init(nibName: nil, bundle: nil)
+        self.title = title
     }
     
     required init?(coder: NSCoder) {
@@ -24,7 +21,6 @@ class ArrayViewController: UIViewController {
     }
     
     // MARK: - Lifecycle Methods
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -45,25 +41,13 @@ class ArrayViewController: UIViewController {
     
     // MARK: - UI Setup
     private func setupUI() {
-        setupNavigationBar()
         setupCollectionView()
+        setupDataSource()
     }
     
-    // MARK: - СonfigureDefaults
+    // MARK: - Configure Defaults
     private func configureDefaults() {
-        setupDataSource()
         applySnapshot()
-    }
-
-    // MARK: - Navigation Bar Setup
-    private func setupNavigationBar() {
-        if let navigationBar = self.navigationController?.navigationBar {
-            let appearance = UINavigationBarAppearance()
-            navigationBar.scrollEdgeAppearance = appearance
-        }
-        navigationController?.navigationBar.prefersLargeTitles = false
-        view.backgroundColor = .systemBackground
-        title = titleArrayViewController
     }
     
     // MARK: - Collection View Setup
@@ -90,68 +74,85 @@ class ArrayViewController: UIViewController {
     
     // MARK: - Data Source Setup
     private func setupDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Int, CellSetButtons>(collectionView: collectionView) { collectionView, indexPath, button in
+        dataSource = UICollectionViewDiffableDataSource<Int, CellButtons>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArrayCell", for: indexPath) as? ArrayCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            
-            cell.button.setTitle(button.title, for: .normal)
-            
-            cell.buttonAction = {
-                Task {
-                    cell.button.isHidden = true
-                    cell.loading.startAnimating()
-                    
-                    let result = await button.perform(using: self.arrayService)
-                    cell.button.setTitle(result, for: .disabled)
-                    
-                    if !result.isEmpty {
-                        cell.button.setTitleColor(.black, for: .disabled)
-                        cell.button.isEnabled = false
-                    }
-                    cell.backgroundColor = .white
-                    
-                    cell.loading.stopAnimating()
-                    cell.button.isHidden = false
-                    
-                    if !self.isArrayCreated {
-                        self.isArrayCreated = true
-                        self.applySnapshot()
-                    }
-                }
-            }
-            
-            cell.backgroundColor = .black.withAlphaComponent(0.1)
-            cell.button.titleLabel?.numberOfLines = 0
-            cell.button.titleLabel?.textAlignment = .left
-            cell.layer.borderWidth = 0.2
-            cell.layer.borderColor = UIColor.black.cgColor
-            
+            cell.configureCell(with: itemIdentifier.title, indexPath: indexPath.row)
             return cell
         }
     }
-    
+
     // MARK: - Snapshot Application
     private func applySnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, CellSetButtons>()
+        var snapshot = NSDiffableDataSourceSnapshot<Int, CellButtons>()
         snapshot.appendSections([0])
-        let items = isArrayCreated ? CellSetButtons.allCases : [.createArray]
+        let items = !viewModel.arraySnapshot.isEmpty ? CellButtons.allCases : [.createArray]
         snapshot.appendItems(items, toSection: 0)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
-    // MARK: - UICollectionViewDelegate and UICollectionViewDelegateFlowLayout
 extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
+    // MARK: - Collection View Cell Sizing
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let collectionViewWidth = collectionView.bounds.width
         let height: CGFloat = 80
         
-        if indexPath.item == 0 {
+        if indexPath.row == 0 {
             return CGSize(width: collectionViewWidth, height: height)
         } else {
-            let width = (collectionViewWidth - 0) / 2
+            let width = collectionViewWidth / 2
             return CGSize(width: width, height: height)
+        }
+    }
+    
+    // MARK: - Collection View Cell Tap Action (As Button)
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = CellButtons.allCases[indexPath.row]
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ArrayCollectionViewCell else { return }
+        
+        cell.isUserInteractionEnabled = false
+        cell.startLoading()
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            var result: String = ""
+            switch selectedItem {
+            case .createArray:
+                result = self.viewModel.createArray()
+            case .insertAtBeginningOneByOne:
+                result = self.viewModel.insertAtBeginningArrayOneByOne()
+            case .insertAtBeginning:
+                result = self.viewModel.insertAtBeginningArrayOnce()
+            case .insertInMiddleOneByOne:
+                result = self.viewModel.insertInMiddleArrayOneByOne()
+            case .insertInMiddle:
+                result = self.viewModel.insertInMiddleArrayOnce()
+            case .insertAtEndOneByOne:
+                result = self.viewModel.insertInEndArrayOneByOne()
+            case .insertAtEnd:
+                result = self.viewModel.insertInEndArrayOnce()
+            case .removeAtEndOneByOne:
+                result = self.viewModel.removeAtEndArrayOneByOne()
+            case .removeAtEnd:
+                result = self.viewModel.removeAtEndArrayOnce()
+            case .removeAtBeginningOneByOne:
+                result = self.viewModel.removeAtBeginningArrayOneByOne()
+            case .removeAtBeginning:
+                result = self.viewModel.removeAtBeginningArrayOnce()
+            case .removeInMiddleOneByOne:
+                result = self.viewModel.removeInMiddleArrayOneByOne()
+            case .removeInMiddle:
+                result = self.viewModel.removeInMiddleArrayOnce()
+            }
+            
+            DispatchQueue.main.async {
+                cell.configureCellResult(with: result)
+                cell.stopLoading()
+                self.applySnapshot()
+            }
         }
     }
 }
