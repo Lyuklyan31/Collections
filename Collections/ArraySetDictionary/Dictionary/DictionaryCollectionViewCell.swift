@@ -4,9 +4,8 @@ import SnapKit
 // MARK: - CollectionViewCell
 class DictionaryCollectionViewCell: UICollectionViewCell {
     
-    let button = UIButton()
-    var buttonAction: (() -> Void)?
-    var loading = UIActivityIndicatorView()
+    var resultLabel = UILabel()
+    var loadingIndicator = UIActivityIndicatorView()
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -18,31 +17,56 @@ class DictionaryCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Setup Button
+    // MARK: - Setup Subviews
     private func setupSubViews() {
-        contentView.addSubview(loading)
-        loading.style = .medium
-        loading.hidesWhenStopped = true
+        // MARK: - Setup Cell
+        backgroundColor = .black.withAlphaComponent(0.3)
+        layer.borderWidth = 0.2
+        layer.borderColor = UIColor.black.cgColor
         
-        loading.snp.makeConstraints {
+        // MARK: - Setup loadingIndicator
+        contentView.addSubview(loadingIndicator)
+        loadingIndicator.style = .medium
+        loadingIndicator.hidesWhenStopped = true
+        
+        loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.height.width.equalTo(100)
         }
+        // MARK: - Setup resultLabel
+        contentView.addSubview(resultLabel)
+        resultLabel.textColor = .systemBlue
+        resultLabel.font = UIFont.systemFont(ofSize: 15)
+        resultLabel.numberOfLines = 0
+        resultLabel.textAlignment = .left
         
-        contentView.addSubview(button)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        
-        button.snp.makeConstraints {
+        resultLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(8)
             $0.verticalEdges.equalToSuperview()
         }
-        
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
-    // MARK: - Button Action
-    @objc private func buttonTapped() {
-        buttonAction?()
+    // MARK: - Configuration Cell Result
+    func configureCellResult(with title: String) {
+        resultLabel.text = title
+        resultLabel.textColor = .black
+        backgroundColor = .black.withAlphaComponent(0.1)
+    }
+    
+    // MARK: - Loading State
+    func startLoading() {
+        loadingIndicator.startAnimating()
+        resultLabel.isHidden = true
+    }
+    
+    func stopLoading() {
+        loadingIndicator.stopAnimating()
+        resultLabel.isHidden = false
+    }
+    
+    // MARK: -  Configuration Cell
+    func configureCell(with title: String, indexPath: Int) {
+        resultLabel.text = title
+        resultLabel.textColor = .systemBlue
     }
 }
