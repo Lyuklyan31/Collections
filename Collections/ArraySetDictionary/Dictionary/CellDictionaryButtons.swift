@@ -28,22 +28,4 @@ enum CellDictionaryButtons: CaseIterable {
             return "Search for a non-existing contact in Dictionary"
         }
     }
-    
-    // MARK: - Perform Actions
-    func perform(using service: DictionaryService) async -> String {
-        switch self {
-        case .findFirstContactArray:
-            return await service.findContactByNameInArray(name: "Contact 1")
-        case .findFirstContactDictionary:
-            return await service.findContactByNameInDictionary(name: "Contact 1")
-        case .findLastContactArray:
-            return await service.findContactByNameInArray(name: "Contact 9999999")
-        case .findLastContactDictionary:
-            return await service.findContactByNameInDictionary(name: "Contact 9999999")
-        case .searchNonExistingArray:
-            return await service.findContactByNameInArray(name: "Contact 10000000")
-        case .searchNonExistingDictionary:
-            return await service.findContactByNameInDictionary(name: "Contact 10000000")
-        }
-    }
 }
