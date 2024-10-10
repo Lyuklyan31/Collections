@@ -1,111 +1,81 @@
-import UIKit
-
 class ArrayViewModel {
     // MARK: - Properties
     private var arrayService = ArrayService()
     var arraySnapshot: [Int] = []
-    
+
     // MARK: - Methods
 
-    func createArray() -> String {
+    func createArrayTime() -> Double {
         let result = arrayService.createArray()
         self.arraySnapshot = result.arraySnapshot
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Array creation time: \(formattedTime) ms."
+        return Double(result.time) / 1_000_000_000
     }
     
-    // MARK: - Insert in Beginning
-    func insertAtBeginningArrayOneByOne() -> String {
+    // Insert operations
+    func insertAtBeginningOneByOneTime() -> Double {
         let result = arrayService.insertOneByOne(at: 0)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Insertion time: \(formattedTime) ms."
+        return Double(result.time) / 1_000_000_000
     }
 
-    func insertAtBeginningArrayOnce() -> String {
+    func insertAtBeginningOnceTime() -> Double {
         let result = arrayService.insertOnce(at: 0)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Insertion time: \(formattedTime) ms."
-    }
-    
-    // MARK: - Insert in Middle
-    func insertInMiddleArrayOneByOne() -> String {
-        let result = arrayService.insertOneByOne(at: 4_999_999)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Insertion time: \(formattedTime) ms."
-    }
-    
-    func insertInMiddleArrayOnce() -> String {
-        let result = arrayService.insertOnce(at: 4_999_999)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Insertion time: \(formattedTime) ms."
-    }
-    
-    // MARK: - Insert in End
-    func insertInEndArrayOneByOne() -> String {
-        let result = arrayService.insertOneByOne(at: 9_999_999)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Insertion time: \(formattedTime) ms."
-    }
-    
-    func insertInEndArrayOnce() -> String {
-        let result = arrayService.insertOnce(at: 9_999_999)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Insertion time: \(formattedTime) ms."
-    }
-    
-    // MARK: - Remove in Beginning
-    func removeAtBeginningArrayOneByOne() -> String {
-        let result = arrayService.removeOneByOne(at: 0, count: 1000)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Removal time: \(formattedTime) ms."
+        return Double(result.time) / 1_000_000_000
     }
 
-    func removeAtBeginningArrayOnce() -> String {
-        let result = arrayService.removeOnce(at: 0, count: 1000)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Removal time: \(formattedTime) ms."
+    func insertInMiddleOneByOneTime() -> Double {
+        let index = arraySnapshot.count / 2
+        let result = arrayService.insertOneByOne(at: index)
+        return Double(result.time) / 1_000_000_000
     }
     
-    // MARK: - Remove in Middle
-    func removeInMiddleArrayOneByOne() -> String {
+    func insertInMiddleOnceTime() -> Double {
+        let index = arraySnapshot.count / 2
+        let result = arrayService.insertOnce(at: index)
+        return Double(result.time) / 1_000_000_000
+    }
+
+    func insertAtEndOneByOneTime() -> Double {
+        let index = arraySnapshot.count
+        let result = arrayService.insertOneByOne(at: index)
+        return Double(result.time) / 1_000_000_000
+    }
+
+    func insertAtEndOnceTime() -> Double {
+        let index = arraySnapshot.count
+        let result = arrayService.insertOnce(at: index)
+        return Double(result.time) / 1_000_000_000
+    }
+
+    // Remove operations
+    func removeAtBeginningOneByOneTime() -> Double {
+        let result = arrayService.removeOneByOne(at: 0, count: 1000)
+        return Double(result.time) / 1_000_000_000
+    }
+
+    func removeAtBeginningOnceTime() -> Double {
+        let result = arrayService.removeOnce(at: 0, count: 1000)
+        return Double(result.time) / 1_000_000_000
+    }
+
+    func removeInMiddleOneByOneTime() -> Double {
         let index = arraySnapshot.count / 2 - 500
         let result = arrayService.removeOneByOne(at: index, count: 1000)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Removal time: \(formattedTime) ms."
+        return Double(result.time) / 1_000_000_000
     }
 
-    func removeInMiddleArrayOnce() -> String {
+    func removeInMiddleOnceTime() -> Double {
         let index = arraySnapshot.count / 2 - 500
         let result = arrayService.removeOnce(at: index, count: 1000)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Removal time: \(formattedTime) ms."
+        return Double(result.time) / 1_000_000_000
     }
 
-    // MARK: - Remove at End
-    func removeAtEndArrayOneByOne() -> String {
+    func removeAtEndOneByOneTime() -> Double {
         let result = arrayService.removeOneByOne(at: arraySnapshot.count - 1000, count: 1000)
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Removal time: \(formattedTime) ms."
+        return Double(result.time) / 1_000_000_000
     }
 
-    func removeAtEndArrayOnce() -> String {
-        let index = arraySnapshot.count - 1000
-        let result = arrayService.removeOnce(at: index, count: 1000) 
-        let seconds = Double(result.time) / 1_000_000_000
-        let formattedTime = String(format: "%.3f", seconds)
-        return "Removal time: \(formattedTime) ms."
+    func removeAtEndOnceTime() -> Double {
+        let result = arrayService.removeOnce(at: arraySnapshot.count - 1000, count: 1000)
+        return Double(result.time) / 1_000_000_000
     }
 }
-
