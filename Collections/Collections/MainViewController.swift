@@ -21,13 +21,7 @@ class MainViewController: UIViewController {
     }
     
     private func setupNavigationBar() {
-        if let navigationBar = self.navigationController?.navigationBar {
-            let appearance = UINavigationBarAppearance()
-            appearance.configureWithDefaultBackground()
-            navigationBar.standardAppearance = appearance
-        }
         navigationController?.navigationBar.prefersLargeTitles = true
-        view.backgroundColor = .systemBackground
         title = "Collections"
     }
     

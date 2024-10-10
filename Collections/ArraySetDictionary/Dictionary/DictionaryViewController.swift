@@ -65,11 +65,6 @@ class DictionaryViewController: UIViewController {
 
     // MARK: - Navigation Bar Setup
     private func setupNavigationBar() {
-        if let navigationBar = self.navigationController?.navigationBar {
-            let appearance = UINavigationBarAppearance()
-            navigationBar.scrollEdgeAppearance = appearance
-        }
-        navigationController?.navigationBar.prefersLargeTitles = false
         view.backgroundColor = .systemBackground
         title = titleDictionaryViewController
     }
