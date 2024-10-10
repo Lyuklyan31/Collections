@@ -4,9 +4,9 @@ import SnapKit
 // MARK: - ArrayCollectionViewCell
 class ArrayCollectionViewCell: UICollectionViewCell {
     
-    let button = UIButton()
-    var buttonAction: (() -> Void)?
-    var loading = UIActivityIndicatorView()
+    // MARK: - UI Elements
+    var resultLabel = UILabel()
+    var loadingIndicator = UIActivityIndicatorView()
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -20,29 +20,55 @@ class ArrayCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Setup Subviews
     private func setupSubViews() {
-        contentView.addSubview(loading)
-        loading.style = .medium
-        loading.hidesWhenStopped = true
+        backgroundColor = .black.withAlphaComponent(0.1)
+        layer.borderWidth = 0.2
+        layer.borderColor = UIColor.black.cgColor
         
-        loading.snp.makeConstraints {
+        contentView.addSubview(loadingIndicator)
+        loadingIndicator.style = .medium
+        loadingIndicator.hidesWhenStopped = true
+        
+        loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.height.width.equalTo(100)
         }
         
-        contentView.addSubview(button)
-        button.setTitleColor(.systemBlue, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        contentView.addSubview(resultLabel)
+        resultLabel.textColor = .systemBlue
+        resultLabel.font = UIFont.systemFont(ofSize: 15)
+        resultLabel.numberOfLines = 0
+        resultLabel.textAlignment = .left
         
-        button.snp.makeConstraints {
+        resultLabel.snp.makeConstraints {
             $0.horizontalEdges.equalToSuperview().inset(8)
             $0.verticalEdges.equalToSuperview()
         }
-        
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
     }
     
-    // MARK: - Button Action
-    @objc private func buttonTapped() {
-        buttonAction?()
+    // MARK: - Configuration Cell Result
+    func configureCellResult(with title: String) {
+        resultLabel.text = title
+        resultLabel.textColor = .black
+        backgroundColor = .white
+    }
+    
+    // MARK: - Loading State
+    func startLoading() {
+        loadingIndicator.startAnimating()
+        resultLabel.isHidden = true
+    }
+
+    func stopLoading() {
+        loadingIndicator.stopAnimating()
+        resultLabel.isHidden = false
+    }
+    
+    // MARK: -  Configuration Cell
+    func configureCell(with title: String, indexPath: Int) {
+        if indexPath == 0 {
+            resultLabel.textAlignment = .center
+        }
+        resultLabel.text = title
+        resultLabel.textColor = .systemBlue
     }
 }
