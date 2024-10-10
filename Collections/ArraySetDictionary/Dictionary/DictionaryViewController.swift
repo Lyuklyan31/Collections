@@ -7,12 +7,13 @@ class DictionaryViewController: UIViewController {
   
     private let array = UILabel()
     private let dictionary = UILabel()
-    private var loading = UIActivityIndicatorView()
+    private var loadingIndicator = UIActivityIndicatorView()
     
-    private var titleDictionaryViewController: String
+    private var viewModel = DictionaryViewModel()
+    
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     
-    private var dictionaryService = DictionaryService()
+    
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
@@ -20,9 +21,9 @@ class DictionaryViewController: UIViewController {
         setupUI()
     }
     
-    init(_ titleDictionaryViewController: String) {
-        self.titleDictionaryViewController = titleDictionaryViewController
+    init(_ title: String) {
         super.init(nibName: nil, bundle: nil)
+        self.title = title
     }
     
     required init?(coder: NSCoder) {
@@ -51,33 +52,35 @@ class DictionaryViewController: UIViewController {
     
     // MARK: - Contact Creation
     private func creatingContacts() {
-        Task {
-            loading.startAnimating()
-            await dictionaryService.createContactsArray()
-            await dictionaryService.createContactsDictionary()
-            loading.stopAnimating()
-            
-            collectionView.isHidden = false
-            array.isHidden = false
-            dictionary.isHidden = false
+        DispatchQueue.main.async {
+            self.loadingIndicator.startAnimating()
+            self.viewModel.createArrayDictionary()
+            self.loadingIndicator.stopAnimating()
+        
+            self.collectionView.isHidden = false
+            self.array.isHidden = false
+            self.dictionary.isHidden = false
         }
     }
 
     // MARK: - Navigation Bar Setup
-    private func setupNavigationBar() {
-        view.backgroundColor = .systemBackground
-        title = titleDictionaryViewController
-    }
+        private func setupNavigationBar() {
+            if let navigationBar = self.navigationController?.navigationBar {
+                let appearance = UINavigationBarAppearance()
+                navigationBar.scrollEdgeAppearance = appearance
+            }
+        }
+
     
     // MARK: - Loading Indicator Setup
     private func setupLoading() {
-        view.addSubview(loading)
-        loading.style = .medium
-        loading.hidesWhenStopped = true
-        loading.isHidden = false
+        view.addSubview(loadingIndicator)
+        loadingIndicator.style = .medium
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.isHidden = false
         view.backgroundColor = .systemBackground
         
-        loading.snp.makeConstraints {
+        loadingIndicator.snp.makeConstraints {
             $0.center.equalToSuperview()
             $0.height.width.equalTo(200)
         }
@@ -167,36 +170,54 @@ extension DictionaryViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DictionaryCell", for: indexPath) as? DictionaryCollectionViewCell else {
             return UICollectionViewCell()
         }
-        
-        let buttons = CellDictionaryButtons.allCases[indexPath.item]
-        
-        cell.button.setTitle(buttons.title, for: .normal)
-        
-        cell.buttonAction = {
-            Task {
-                cell.button.isHidden = true
-                cell.loading.startAnimating()
-                
-                let result = await buttons.perform(using: self.dictionaryService)
-                cell.button.setTitle(result, for: .normal)
-                
-                if !result.isEmpty {
-                    cell.button.setTitleColor(.black, for: .disabled)
-                    cell.button.isEnabled = false
-                }
-                cell.backgroundColor = .white
-                
-                cell.button.isHidden = false
-                cell.loading.stopAnimating()
-            }
-        }
-        
-        cell.backgroundColor = .black.withAlphaComponent(0.1)
-        cell.button.titleLabel?.numberOfLines = 0
-        cell.button.titleLabel?.textAlignment = .left
-        cell.layer.borderWidth = 0.2
-        cell.layer.borderColor = UIColor.black.cgColor
+        cell.resultLabel.text = CellDictionaryButtons.allCases[indexPath.row].title
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = CellDictionaryButtons.allCases[indexPath.row]
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? DictionaryCollectionViewCell else { return }
+        
+        cell.isUserInteractionEnabled = false
+        cell.startLoading()
+        
+        DispatchQueue.global(qos: .userInitiated).async {
+            var result: (message: String, number: Int, time: Double)
+            
+            switch selectedItem {
+            case .findFirstContactArray:
+                let (number, time) = self.viewModel.findFirstContactInArrayAndMeasureTime()
+                result = ("First contact in array found", number, time)
+                
+            case .findFirstContactDictionary:
+                let (number, time) = self.viewModel.findFirstContactInDictionaryAndMeasureTime()
+                result = ("First contact in dictionary found", number, time)
+                
+            case .findLastContactArray:
+                let (number, time) = self.viewModel.findLastContactInArrayAndMeasureTime()
+                result = ("Last contact in array found", number, time)
+                
+            case .findLastContactDictionary:
+                let (number, time) = self.viewModel.findLastContactInDictionaryAndMeasureTime()
+                result = ("Last contact in dictionary found", number, time)
+                
+            case .searchNonExistingArray:
+                let (number, time) = self.viewModel.findNonExistingContactInArrayAndMeasureTime()
+                result = ("Searched for non-existing contact in array", number, time)
+                
+            case .searchNonExistingDictionary:
+                let (number, time) = self.viewModel.findNonExistingContactInDictionaryAndMeasureTime()
+                result = ("Searched for non-existing contact in dictionary", number, time)
+            }
+            
+            let formattedResult = String(format: "\(result.message): %.3f ms. Result number: \(result.number)", result.time)
+            
+            DispatchQueue.main.async {
+                cell.configureCellResult(with: formattedResult)
+                cell.stopLoading()
+            }
+        }
     }
 }
