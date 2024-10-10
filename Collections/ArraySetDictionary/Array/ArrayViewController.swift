@@ -108,7 +108,6 @@ extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegat
         }
     }
     
-    // MARK: - Collection View Cell Tap Action (As Button)
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedItem = CellButtons.allCases[indexPath.row]
         
@@ -118,38 +117,67 @@ extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.startLoading()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            var result: String = ""
+            
+            var result: (message: String, time: Double)
+            
             switch selectedItem {
             case .createArray:
-                result = self.viewModel.createArray()
+                let time = self.viewModel.createArrayTime()
+                result = ("Creation time", time)
+                
             case .insertAtBeginningOneByOne:
-                result = self.viewModel.insertAtBeginningArrayOneByOne()
+                let time = self.viewModel.insertAtBeginningOneByOneTime()
+                result = ("Insertion time", time)
+                
             case .insertAtBeginning:
-                result = self.viewModel.insertAtBeginningArrayOnce()
+                let time = self.viewModel.insertAtBeginningOnceTime()
+                result = ("Insertion time", time)
+                
             case .insertInMiddleOneByOne:
-                result = self.viewModel.insertInMiddleArrayOneByOne()
+                let time = self.viewModel.insertInMiddleOneByOneTime()
+                result = ("Insertion time", time)
+                
             case .insertInMiddle:
-                result = self.viewModel.insertInMiddleArrayOnce()
+                let time = self.viewModel.insertInMiddleOnceTime()
+                result = ("Insertion time", time)
+                
             case .insertAtEndOneByOne:
-                result = self.viewModel.insertInEndArrayOneByOne()
+                let time = self.viewModel.insertAtEndOneByOneTime()
+                result = ("Insertion time", time)
+                
             case .insertAtEnd:
-                result = self.viewModel.insertInEndArrayOnce()
+                let time = self.viewModel.insertAtEndOnceTime()
+                result = ("Insertion time", time)
+                
             case .removeAtEndOneByOne:
-                result = self.viewModel.removeAtEndArrayOneByOne()
+                let time = self.viewModel.removeAtEndOneByOneTime()
+                result = ("Removal time", time)
+                
             case .removeAtEnd:
-                result = self.viewModel.removeAtEndArrayOnce()
+                let time = self.viewModel.removeAtEndOnceTime()
+                result = ("Removal time", time)
+                
             case .removeAtBeginningOneByOne:
-                result = self.viewModel.removeAtBeginningArrayOneByOne()
+                let time = self.viewModel.removeAtBeginningOneByOneTime()
+                result = ("Removal time", time)
+                
             case .removeAtBeginning:
-                result = self.viewModel.removeAtBeginningArrayOnce()
+                let time = self.viewModel.removeAtBeginningOnceTime()
+                result = ("Removal time", time)
+                
             case .removeInMiddleOneByOne:
-                result = self.viewModel.removeInMiddleArrayOneByOne()
+                let time = self.viewModel.removeInMiddleOneByOneTime()
+                result = ("Removal time", time)
+                
             case .removeInMiddle:
-                result = self.viewModel.removeInMiddleArrayOnce()
+                let time = self.viewModel.removeInMiddleOnceTime()
+                result = ("Removal time", time)
             }
             
+            let formattedResult = String(format: "\(result.message): %.3f ms.", result.time)
+            
             DispatchQueue.main.async {
-                cell.configureCellResult(with: result)
+                cell.configureCellResult(with: formattedResult)
                 cell.stopLoading()
                 self.applySnapshot()
             }
