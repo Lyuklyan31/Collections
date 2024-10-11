@@ -33,6 +33,7 @@ class DictionaryViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBarAppearance()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -43,7 +44,6 @@ class DictionaryViewController: UIViewController {
     
     // MARK: - UI Setup
     private func setupUI() {
-        setupNavigationBar()
         setupLabels()
         setupCollectionView()
         setupLoading()
@@ -52,25 +52,19 @@ class DictionaryViewController: UIViewController {
     
     // MARK: - Contact Creation
     private func creatingContacts() {
-        DispatchQueue.main.async {
-            self.loadingIndicator.startAnimating()
-            self.viewModel.createArrayDictionary()
-            self.loadingIndicator.stopAnimating()
+        self.loadingIndicator.startAnimating()
         
-            self.collectionView.isHidden = false
-            self.array.isHidden = false
-            self.dictionary.isHidden = false
-        }
-    }
-
-    // MARK: - Navigation Bar Setup
-        private func setupNavigationBar() {
-            if let navigationBar = self.navigationController?.navigationBar {
-                let appearance = UINavigationBarAppearance()
-                navigationBar.scrollEdgeAppearance = appearance
+        DispatchQueue.global(qos: .userInitiated).async {
+            self.viewModel.createArrayDictionary()
+            
+            DispatchQueue.main.async {
+                self.loadingIndicator.stopAnimating()
+                self.collectionView.isHidden = false
+                self.array.isHidden = false
+                self.dictionary.isHidden = false
             }
         }
-
+    }
     
     // MARK: - Loading Indicator Setup
     private func setupLoading() {
@@ -170,7 +164,7 @@ extension DictionaryViewController: UICollectionViewDataSource {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "DictionaryCell", for: indexPath) as? DictionaryCollectionViewCell else {
             return UICollectionViewCell()
         }
-        cell.resultLabel.text = CellDictionaryButtons.allCases[indexPath.row].title
+        cell.configureCell(with: CellDictionaryButtons.allCases[indexPath.row].title )
         
         return cell
     }
@@ -189,27 +183,27 @@ extension DictionaryViewController: UICollectionViewDataSource {
             switch selectedItem {
             case .findFirstContactArray:
                 let (number, time) = self.viewModel.findFirstContactInArrayAndMeasureTime()
-                result = ("First contact in array found", number, time)
+                result = ("First element search time", number, time)
                 
             case .findFirstContactDictionary:
                 let (number, time) = self.viewModel.findFirstContactInDictionaryAndMeasureTime()
-                result = ("First contact in dictionary found", number, time)
+                result = ("First element search time", number, time)
                 
             case .findLastContactArray:
                 let (number, time) = self.viewModel.findLastContactInArrayAndMeasureTime()
-                result = ("Last contact in array found", number, time)
+                result = ("Last element search time", number, time)
                 
             case .findLastContactDictionary:
                 let (number, time) = self.viewModel.findLastContactInDictionaryAndMeasureTime()
-                result = ("Last contact in dictionary found", number, time)
+                result = ("Last element search time", number, time)
                 
             case .searchNonExistingArray:
                 let (number, time) = self.viewModel.findNonExistingContactInArrayAndMeasureTime()
-                result = ("Searched for non-existing contact in array", number, time)
+                result = ("Non-existing element search time", number, time)
                 
             case .searchNonExistingDictionary:
                 let (number, time) = self.viewModel.findNonExistingContactInDictionaryAndMeasureTime()
-                result = ("Searched for non-existing contact in dictionary", number, time)
+                result = ("Non-existing element search time", number, time)
             }
             
             let formattedResult = String(format: "\(result.message): %.3f ms. Result number: \(result.number)", result.time)
