@@ -5,6 +5,7 @@ class ButtonView: UIView {
     // MARK: - UI Elements
     let button = UIButton(type: .system)
     let resultLabel = UILabel()
+    
     private let title: String
     
     // MARK: - Button Action
@@ -23,12 +24,11 @@ class ButtonView: UIView {
     
     // MARK: - Setup UI
     private func setupUI() {
-        setupButton()
-        setupResultLabel()
+        setupSubViews()
     }
     
     // MARK: - Setup Button
-    private func setupButton() {
+    private func setupSubViews() {
         button.setTitle(title, for: .normal)
         button.titleLabel?.numberOfLines = 0
         button.titleLabel?.textAlignment = .center
@@ -38,11 +38,9 @@ class ButtonView: UIView {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
         }
+        
         button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-    }
-    
-    // MARK: - Setup Result Label
-    private func setupResultLabel() {
+        
         resultLabel.text = ""
         resultLabel.textAlignment = .center
         resultLabel.isHidden = true
@@ -59,5 +57,10 @@ class ButtonView: UIView {
     // MARK: - Button Tapped Action
     @objc private func buttonTapped() {
         buttonAction?()
+    }
+    
+    func configure(with text: String) {
+        resultLabel.text = text.isEmpty ? "" : text
+        resultLabel.isHidden = false
     }
 }
