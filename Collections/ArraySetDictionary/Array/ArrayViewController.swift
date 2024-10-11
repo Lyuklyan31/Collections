@@ -25,6 +25,8 @@ class ArrayViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         configureDefaults()
+        
+        self.navigationController?.navigationBar.accessibilityIdentifier = "ArrayViewControllerNavBar"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -78,6 +80,7 @@ class ArrayViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArrayCell", for: indexPath) as? ArrayCollectionViewCell else {
                 return UICollectionViewCell()
             }
+            cell.accessibilityIdentifier = "ArrayCell_\(indexPath.row)"
             cell.configureCell(with: itemIdentifier.title, at: indexPath.row)
             return cell
         }

@@ -40,6 +40,8 @@ class ButtonView: UIView {
             $0.horizontalEdges.equalToSuperview()
         }
         
+        resultButton.accessibilityIdentifier = title
+        
         resultButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         resultLabel.text = ""
@@ -63,5 +65,13 @@ class ButtonView: UIView {
     func configure(with text: String) {
         resultLabel.text = text.isEmpty ? "" : text
         resultLabel.isHidden = false
+        
+        if title == "All matching letters" {
+            resultLabel.accessibilityIdentifier = "ResultLabelMatching"
+        } else if title == "All characters that do not match" {
+            resultLabel.accessibilityIdentifier = "ResultLabelNonMatching"
+        } else if title == "All unique characters from the first text field that do not match in text fields" {
+            resultLabel.accessibilityIdentifier = "ResultLabelUnique"
+        }
     }
 }

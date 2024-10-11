@@ -1,7 +1,7 @@
 import XCTest
 @testable import Collections
 
-class ArrayServiceTests: XCTestCase {
+class ArrayUnitTests: XCTestCase {
     var arrayService: ArrayService!
 
     override func setUp() {

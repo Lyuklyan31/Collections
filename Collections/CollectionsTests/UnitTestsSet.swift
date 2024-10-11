@@ -1,7 +1,7 @@
 import XCTest
 @testable import Collections
 
-class UnitTestsSet: XCTestCase {
+class SetUnitTests: XCTestCase {
     var viewModel: SetViewModel!
 
     override func setUp() {

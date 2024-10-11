@@ -23,6 +23,8 @@ class NoDigitsView: UIView {
     // MARK: - Setup UI and Constraints
     
     private func setupUI() {
+        self.accessibilityIdentifier = "NoDigitsView"
+
         textField.borderStyle = .roundedRect
         textField.backgroundColor = .white
         

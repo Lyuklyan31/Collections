@@ -1,7 +1,7 @@
 import XCTest
 @testable import Collections
 
-class DictionaryServiceTests: XCTestCase {
+class DictionaryUnitTests: XCTestCase {
     var viewModel: DictionaryViewModel!
 
     override func setUp() {
