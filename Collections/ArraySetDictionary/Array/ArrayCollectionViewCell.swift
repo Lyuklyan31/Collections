@@ -20,12 +20,12 @@ class ArrayCollectionViewCell: UICollectionViewCell {
     
     // MARK: - Setup Subviews
     private func setupSubViews() {
-    // MARK: - Setup Cell
+        // MARK: - Setup Cell
         backgroundColor = .black.withAlphaComponent(0.1)
         layer.borderWidth = 0.2
         layer.borderColor = UIColor.black.cgColor
         
-    // MARK: - Setup loadingIndicator
+        // MARK: - Setup loadingIndicator
         contentView.addSubview(loadingIndicator)
         loadingIndicator.style = .medium
         loadingIndicator.hidesWhenStopped = true
@@ -34,7 +34,8 @@ class ArrayCollectionViewCell: UICollectionViewCell {
             $0.center.equalToSuperview()
             $0.height.width.equalTo(100)
         }
-    // MARK: - Setup resultLabel
+        
+        // MARK: - Setup resultLabel
         contentView.addSubview(resultLabel)
         resultLabel.textColor = .systemBlue
         resultLabel.font = UIFont.systemFont(ofSize: 15)
@@ -65,7 +66,7 @@ class ArrayCollectionViewCell: UICollectionViewCell {
         resultLabel.isHidden = false
     }
     
-    // MARK: -  Configuration Cell
+    // MARK: - Configuration Cell
     func configureCell(with title: String, indexPath: Int) {
         if indexPath == 0 {
             resultLabel.textAlignment = .center
