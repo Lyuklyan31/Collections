@@ -6,12 +6,13 @@ class SetViewController: UIViewController {
     private let noDigitsViewFirst = NoDigitsView()
     private let noDigitsViewSecond = NoDigitsView()
     private let stackView = UIStackView()
-    private var titleSetViewController: String
+    
+    private let viewModel = SetViewModel()
     
     // MARK: - Initializers
-    init(_ titleSetViewController: String) {
-        self.titleSetViewController = titleSetViewController
+    init(_ title: String) {
         super.init(nibName: nil, bundle: nil)
+        self.title = title
     }
     
     required init?(coder: NSCoder) {
@@ -28,6 +29,7 @@ class SetViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.prefersLargeTitles = false
+        navigationController?.navigationBar.scrollEdgeAppearance = UINavigationBarAppearance()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -38,7 +40,6 @@ class SetViewController: UIViewController {
     
     // MARK: - SetupUI
     private func setupUI() {
-        setupNavigationBar()
         setupNoDigitsView()
         setupFindMatchesStackView()
     }
@@ -46,17 +47,6 @@ class SetViewController: UIViewController {
     // MARK: - Default Configuration
     private func configureDefaults() {
         setupGestures()
-    }
-    
-    // MARK: - Navigation Bar Setup
-    private func setupNavigationBar() {
-        if let navigationBar = self.navigationController?.navigationBar {
-            let appearance = UINavigationBarAppearance()
-            navigationBar.scrollEdgeAppearance = appearance
-        }
-        navigationController?.navigationBar.prefersLargeTitles = false
-        view.backgroundColor = .systemBackground
-        title = titleSetViewController
     }
     
     // MARK: - No Digits View Setup
@@ -81,6 +71,8 @@ class SetViewController: UIViewController {
     // MARK: - Find Matches StackView Setup
     private func setupFindMatchesStackView() {
         // Configuring the stack view for buttons
+        view.backgroundColor = .systemBackground
+        
         stackView.axis = .vertical
         stackView.spacing = 16
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -92,21 +84,31 @@ class SetViewController: UIViewController {
             $0.top.equalTo(noDigitsViewSecond.snp.bottom).offset(32)
             $0.bottom.lessThanOrEqualToSuperview()
         }
-
-        // Adding buttons to the stack view
-        for buttonType in Buttons.allCases {
+        
+        for buttonType in SetButtons.allCases {
             let button = ButtonView(buttonType.title)
             stackView.addArrangedSubview(button)
             
-            // Setting up the button action
+            let currentButtonType = buttonType
+            
             button.buttonAction = {
                 let firstText = self.noDigitsViewFirst.textField.text ?? ""
                 let secondText = self.noDigitsViewSecond.textField.text ?? ""
                 
-                let resultText = buttonType.perform(using: button, firstText: firstText, secondText: secondText)
+                var resultText = ""
                 
-                button.resultLabel.isHidden = false
-                button.resultLabel.text = resultText.isEmpty ? "" : resultText
+                switch currentButtonType {
+                case .matchingLetters:
+                    resultText = self.viewModel.findMatchingLetters(firstText: firstText, secondText: secondText)
+                case .nonMatchingLetters:
+                    resultText = self.viewModel.findNonMatchingLetters(firstText: firstText, secondText: secondText)
+                case .nonMatchingUniqueChars:
+                    resultText = self.viewModel.findUniqueNonMatchingChars(firstText: firstText, secondText: secondText)
+                }
+                
+                DispatchQueue.main.async {
+                    button.configure(with: resultText)
+                }
             }
         }
     }
