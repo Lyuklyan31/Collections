@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
 
+// MARK: - SetViewController
 class SetViewController: UIViewController {
     // MARK: - Properties
     private let noDigitsViewFirst = NoDigitsView()

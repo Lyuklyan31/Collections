@@ -1,6 +1,7 @@
 import UIKit
 import SnapKit
 
+// MARK: - NoDigitsView
 class NoDigitsView: UIView {
     
     // MARK: - UI Elements
@@ -40,9 +41,7 @@ extension NoDigitsView: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let text = textField.text as NSString? else { return false }
-        
         let newString = text.replacingCharacters(in: range, with: string)
-        
         if newString.rangeOfCharacter(from: .decimalDigits) != nil {
             return false
         }

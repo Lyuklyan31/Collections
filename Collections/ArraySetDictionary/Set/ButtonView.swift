@@ -1,9 +1,10 @@
 import UIKit
 
+// MARK: - ButtonView
 class ButtonView: UIView {
     
     // MARK: - UI Elements
-    let button = UIButton(type: .system)
+    let resultButton = UIButton(type: .system)
     let resultLabel = UILabel()
     
     private let title: String
@@ -29,17 +30,17 @@ class ButtonView: UIView {
     
     // MARK: - Setup Button
     private func setupSubViews() {
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.numberOfLines = 0
-        button.titleLabel?.textAlignment = .center
+        resultButton.setTitle(title, for: .normal)
+        resultButton.titleLabel?.numberOfLines = 0
+        resultButton.titleLabel?.textAlignment = .center
         
-        addSubview(button)
-        button.snp.makeConstraints {
+        addSubview(resultButton)
+        resultButton.snp.makeConstraints {
             $0.top.equalToSuperview()
             $0.horizontalEdges.equalToSuperview()
         }
         
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        resultButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         
         resultLabel.text = ""
         resultLabel.textAlignment = .center
@@ -48,7 +49,7 @@ class ButtonView: UIView {
         
         addSubview(resultLabel)
         resultLabel.snp.makeConstraints {
-            $0.top.equalTo(button.snp.bottom).offset(16)
+            $0.top.equalTo(resultButton.snp.bottom).offset(16)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.lessThanOrEqualToSuperview()
         }

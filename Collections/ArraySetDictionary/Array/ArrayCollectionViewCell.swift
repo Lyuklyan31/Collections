@@ -67,7 +67,7 @@ class ArrayCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: - Configuration Cell
-    func configureCell(with title: String, indexPath: Int) {
+    func configureCell(with title: String, at indexPath: Int) {
         if indexPath == 0 {
             resultLabel.textAlignment = .center
         }

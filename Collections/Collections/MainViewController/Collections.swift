@@ -1,18 +1,20 @@
 import Foundation
 
+// MARK: - Collections Enum
 enum Collections: CaseIterable {
     case array
     case set
     case dictionary
     
+    // MARK: - Title
     var title: String {
         switch self {
         case .array:
-            "Array"
+            return "Array"
         case .set:
-            "Set"
+            return "Set"
         case .dictionary:
-            "Dictionary"
+            return "Dictionary"
         }
     }
 }

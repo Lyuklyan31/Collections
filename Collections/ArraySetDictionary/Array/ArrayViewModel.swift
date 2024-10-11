@@ -1,3 +1,6 @@
+import Foundation
+
+// MARK: - ArrayViewModel
 class ArrayViewModel {
     // MARK: - Properties
     private var arrayService = ArrayService()
@@ -5,91 +8,79 @@ class ArrayViewModel {
 
     // MARK: - Methods
 
-    // MARK: - Array Creation
-    func createArrayTime() -> Double {
+    // MARK: - Array Creation Time
+    func getTimeForArrayCreation() -> Double {
         let result = arrayService.createArray()
         self.arraySnapshot = result.arraySnapshot
         return Double(result.time) / 1_000_000_000
     }
     
-    // MARK: - Insert Operations
+    // MARK: - Insert Operations Time
     
-    /// Inserts elements one by one at the beginning of the array and returns the time taken.
-    func insertAtBeginningOneByOneTime() -> Double {
+    func getTimeForInsertAtBeginningOneByOne() -> Double {
         let result = arrayService.insertOneByOne(at: 0)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Inserts all elements at the beginning of the array at once and returns the time taken.
-    func insertAtBeginningOnceTime() -> Double {
+    func getTimeForInsertAtBeginningOnce() -> Double {
         let result = arrayService.insertOnce(at: 0)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Inserts elements one by one in the middle of the array and returns the time taken.
-    func insertInMiddleOneByOneTime() -> Double {
+    func getTimeForInsertInMiddleOneByOne() -> Double {
         let index = arraySnapshot.count / 2
         let result = arrayService.insertOneByOne(at: index)
         return Double(result.time) / 1_000_000_000
     }
     
-    /// Inserts all elements in the middle of the array at once and returns the time taken.
-    func insertInMiddleOnceTime() -> Double {
+    func getTimeForInsertInMiddleOnce() -> Double {
         let index = arraySnapshot.count / 2
         let result = arrayService.insertOnce(at: index)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Inserts elements one by one at the end of the array and returns the time taken.
-    func insertAtEndOneByOneTime() -> Double {
+    func getTimeForInsertAtEndOneByOne() -> Double {
         let index = arraySnapshot.count
         let result = arrayService.insertOneByOne(at: index)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Inserts all elements at the end of the array at once and returns the time taken.
-    func insertAtEndOnceTime() -> Double {
+    func getTimeForInsertAtEndOnce() -> Double {
         let index = arraySnapshot.count
         let result = arrayService.insertOnce(at: index)
         return Double(result.time) / 1_000_000_000
     }
 
-    // MARK: - Remove Operations
+    // MARK: - Remove Operations Time
     
-    /// Removes elements one by one from the beginning of the array and returns the time taken.
-    func removeAtBeginningOneByOneTime() -> Double {
+    func getTimeForRemoveAtBeginningOneByOne() -> Double {
         let result = arrayService.removeOneByOne(at: 0, count: 1000)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Removes all elements from the beginning of the array at once and returns the time taken.
-    func removeAtBeginningOnceTime() -> Double {
+    func getTimeForRemoveAtBeginningOnce() -> Double {
         let result = arrayService.removeOnce(at: 0, count: 1000)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Removes elements one by one from the middle of the array and returns the time taken.
-    func removeInMiddleOneByOneTime() -> Double {
+    func getTimeForRemoveInMiddleOneByOne() -> Double {
         let index = arraySnapshot.count / 2 - 500
         let result = arrayService.removeOneByOne(at: index, count: 1000)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Removes all elements from the middle of the array at once and returns the time taken.
-    func removeInMiddleOnceTime() -> Double {
+    func getTimeForRemoveInMiddleOnce() -> Double {
         let index = arraySnapshot.count / 2 - 500
         let result = arrayService.removeOnce(at: index, count: 1000)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Removes elements one by one from the end of the array and returns the time taken.
-    func removeAtEndOneByOneTime() -> Double {
+    func getTimeForRemoveAtEndOneByOne() -> Double {
         let result = arrayService.removeOneByOne(at: arraySnapshot.count - 1000, count: 1000)
         return Double(result.time) / 1_000_000_000
     }
 
-    /// Removes all elements from the end of the array at once and returns the time taken.
-    func removeAtEndOnceTime() -> Double {
+    func getTimeForRemoveAtEndOnce() -> Double {
         let result = arrayService.removeOnce(at: arraySnapshot.count - 1000, count: 1000)
         return Double(result.time) / 1_000_000_000
     }

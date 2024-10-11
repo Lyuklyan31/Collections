@@ -1,3 +1,6 @@
+import Foundation
+
+// MARK: - SetButtons
 enum SetButtons: CaseIterable {
     // MARK: - Button Cases
     case matchingLetters

@@ -75,14 +75,14 @@ class ArrayServiceTests: XCTestCase {
     // MARK: - Test Removing in Middle
     func testRemoveInMiddleArrayOneByOne() async throws {
         arrayService.createArray()
-        let index = arrayService.myArray.count / 2 - 500
+        let index = arrayService.numbersArray.count / 2 - 500
         let result = arrayService.removeOneByOne(at: index, count: 1000)
         XCTAssertEqual(result.arraySnapshot.count, 10_000_000 - 1000, "Expected array count after removal. Actual: \(result.arraySnapshot.count)")
     }
 
     func testRemoveInMiddleArray() async throws {
         arrayService.createArray()
-        let index = arrayService.myArray.count / 2 - 500
+        let index = arrayService.numbersArray.count / 2 - 500
         let result = arrayService.removeOnce(at: index, count: 1000)
         XCTAssertEqual(result.arraySnapshot.count, 10_000_000 - 1000, "Expected array count after removal. Actual: \(result.arraySnapshot.count)")
     }
@@ -90,13 +90,13 @@ class ArrayServiceTests: XCTestCase {
     // MARK: - Test Removing at End
     func testRemoveAtEndArrayOneByOne() async throws {
         arrayService.createArray()
-        let result = arrayService.removeOneByOne(at: arrayService.myArray.count - 1000, count: 1000)
+        let result = arrayService.removeOneByOne(at: arrayService.numbersArray.count - 1000, count: 1000)
         XCTAssertEqual(result.arraySnapshot.count, 10_000_000 - 1000, "Expected array count after removal. Actual: \(result.arraySnapshot.count)")
     }
 
     func testRemoveAtEndArray() async throws {
         arrayService.createArray()
-        let index = arrayService.myArray.count - 1000
+        let index = arrayService.numbersArray.count - 1000
         let result = arrayService.removeOnce(at: index, count: 1000)
         XCTAssertEqual(result.arraySnapshot.count, 10_000_000 - 1000, "Expected array count after removal. Actual: \(result.arraySnapshot.count)")
     }

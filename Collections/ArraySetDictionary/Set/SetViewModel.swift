@@ -1,12 +1,6 @@
-//
-//  SetViewModel.swift
-//  Collections
-//
-//  Created by Mac on 11.10.2024.
-//
-
 import Foundation
 
+// MARK: - SetViewModel
 class SetViewModel {
     // MARK: - Finding Matching Letters
     func findMatchingLetters(firstText: String, secondText: String) -> String {

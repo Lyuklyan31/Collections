@@ -1,30 +1,32 @@
 import Foundation
 
+// MARK: - ArrayOperationResult/
 struct ArrayOperationResult {
     let time: UInt64
     let arraySnapshot: [Int]
 }
 
+// MARK: - ArrayService
 class ArrayService {
     
     // MARK: - Properties
-    private var myArray = [Int]()
+    var numbersArray = [Int]()
     
     // MARK: - Array Creation
     @discardableResult
     func createArray() -> ArrayOperationResult {
         let startTime = DispatchTime.now()
         for number in 0...9_999_999 {
-            myArray.append(number)
+            numbersArray.append(number)
         }
         let endTime = DispatchTime.now()
         let time = endTime.uptimeNanoseconds - startTime.uptimeNanoseconds
-        return ArrayOperationResult(time: time, arraySnapshot: myArray)
+        return ArrayOperationResult(time: time, arraySnapshot: numbersArray)
     }
     
     // MARK: - Insert OneByOne
     func insertOneByOne(at index: Int) -> ArrayOperationResult {
-        var array = myArray
+        var array = numbersArray
         let startTime = DispatchTime.now()
         for number in 1...1000 {
             array.insert(number, at: index)
@@ -36,7 +38,7 @@ class ArrayService {
     
     // MARK: - Insert Once
     func insertOnce(at index: Int) -> ArrayOperationResult {
-        var array = myArray
+        var array = numbersArray
         let startTime = DispatchTime.now()
         array.insert(contentsOf: 1...1000, at: index)
         let endTime = DispatchTime.now()
@@ -46,7 +48,7 @@ class ArrayService {
     
     // MARK: - Remove OneByOne
     func removeOneByOne(at index: Int, count: Int) -> ArrayOperationResult {
-        var array = myArray
+        var array = numbersArray
         let startTime = DispatchTime.now()
         for _ in 0..<count {
             array.remove(at: index)
@@ -58,7 +60,7 @@ class ArrayService {
 
     // MARK: - Remove Once
     func removeOnce(at index: Int, count: Int) -> ArrayOperationResult {
-        var array = myArray
+        var array = numbersArray
         let startTime = DispatchTime.now()
         array.removeSubrange(index..<index + count)
         let endTime = DispatchTime.now()

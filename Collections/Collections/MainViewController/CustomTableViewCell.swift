@@ -1,17 +1,11 @@
-//
-//  CustomTableViewCell.swift
-//  Collections
-//
-//  Created by Mac on 11.10.2024.
-//
-
 import UIKit
 
+// MARK: - CustomTableViewCell
 class CustomTableViewCell: UITableViewCell {
     
     // MARK: - Properties
-    let label = UILabel()
-    let image = UIImageView()
+    let cellLabel = UILabel()
+    let chevronImage = UIImageView()
     
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -25,26 +19,23 @@ class CustomTableViewCell: UITableViewCell {
 
     // MARK: - Setup
     private func setupSubViews() {
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.systemFont(ofSize: 16)
-        label.textColor = .black
+        cellLabel.font = UIFont.systemFont(ofSize: 16)
+        cellLabel.textColor = .black
         
-        contentView.addSubview(label)
+        contentView.addSubview(cellLabel)
         
-        label.snp.makeConstraints {
+        cellLabel.snp.makeConstraints {
             $0.leading.equalToSuperview().offset(16)
             $0.trailing.lessThanOrEqualToSuperview()
             $0.verticalEdges.equalToSuperview().inset(8)
         }
         
-        image.image = UIImage(systemName: "chevron.forward")
-        image.contentMode = .scaleAspectFit
-        image.tintColor = .systemGray
-        contentView.addSubview(image)
+        chevronImage.image = UIImage(systemName: "chevron.forward")
+        chevronImage.contentMode = .scaleAspectFit
+        chevronImage .tintColor = .systemGray
+        contentView.addSubview(chevronImage)
         
-        image.translatesAutoresizingMaskIntoConstraints = false
-        
-        image.snp.makeConstraints {
+        chevronImage.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-16)
             $0.leading.greaterThanOrEqualToSuperview()
             $0.verticalEdges.equalToSuperview().inset(8)
@@ -53,6 +44,6 @@ class CustomTableViewCell: UITableViewCell {
     
     // MARK: - Configuration
     func configure(with title: String) {
-        label.text = title
+        cellLabel.text = title
     }
 }

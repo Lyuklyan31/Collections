@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
         
-        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "customCell")
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "CustomCell")
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -43,7 +43,7 @@ extension MainViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CustomCell", for: indexPath) as! CustomTableViewCell
         let collection = Collections.allCases[indexPath.row]
         cell.configure(with: collection.title)
         return cell

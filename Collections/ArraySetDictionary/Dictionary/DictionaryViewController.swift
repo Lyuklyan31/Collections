@@ -1,12 +1,11 @@
 import UIKit
-import SwiftUI
 import SnapKit
 
 // MARK: - DictionaryViewController
 class DictionaryViewController: UIViewController {
   
-    private let array = UILabel()
-    private let dictionary = UILabel()
+    private let arrayLabel = UILabel()
+    private let dictionaryLabel = UILabel()
     private var loadingIndicator = UIActivityIndicatorView()
     
     private var viewModel = DictionaryViewModel()
@@ -55,13 +54,13 @@ class DictionaryViewController: UIViewController {
         self.loadingIndicator.startAnimating()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            self.viewModel.createArrayDictionary()
+            self.viewModel.loadCollections()
             
             DispatchQueue.main.async {
                 self.loadingIndicator.stopAnimating()
                 self.collectionView.isHidden = false
-                self.array.isHidden = false
-                self.dictionary.isHidden = false
+                self.arrayLabel.isHidden = false
+                self.dictionaryLabel.isHidden = false
             }
         }
     }
@@ -82,27 +81,27 @@ class DictionaryViewController: UIViewController {
     
     // MARK: - Labels Setup
     private func setupLabels() {
-        array.text = "Array"
-        array.font = .systemFont(ofSize: 17)
-        array.textColor = .black
-        array.textAlignment = .center
-        array.isHidden = true
+        arrayLabel.text = "Array"
+        arrayLabel.font = .systemFont(ofSize: 17)
+        arrayLabel.textColor = .black
+        arrayLabel.textAlignment = .center
+        arrayLabel.isHidden = true
         
-        view.addSubview(array)
-        array.snp.makeConstraints {
+        view.addSubview(arrayLabel)
+        arrayLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.leading.equalToSuperview().offset(64)
             $0.trailing.lessThanOrEqualToSuperview()
         }
         
-        dictionary.text = "Dictionary"
-        dictionary.font = .systemFont(ofSize: 17)
-        dictionary.textColor = .black
-        dictionary.textAlignment = .center
-        dictionary.isHidden = true
+        dictionaryLabel.text = "Dictionary"
+        dictionaryLabel.font = .systemFont(ofSize: 17)
+        dictionaryLabel.textColor = .black
+        dictionaryLabel.textAlignment = .center
+        dictionaryLabel.isHidden = true
         
-        view.addSubview(dictionary)
-        dictionary.snp.makeConstraints {
+        view.addSubview(dictionaryLabel)
+        dictionaryLabel.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(16)
             $0.trailing.equalToSuperview().offset(-64)
             $0.leading.greaterThanOrEqualToSuperview()
@@ -127,7 +126,7 @@ class DictionaryViewController: UIViewController {
         
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(array.snp.bottom).offset(16)
+            $0.top.equalTo(arrayLabel.snp.bottom).offset(16)
             $0.horizontalEdges.equalToSuperview()
             $0.bottom.greaterThanOrEqualToSuperview()
         }
@@ -182,27 +181,27 @@ extension DictionaryViewController: UICollectionViewDataSource {
             
             switch selectedItem {
             case .findFirstContactArray:
-                let (number, time) = self.viewModel.findFirstContactInArrayAndMeasureTime()
+                let (number, time) = self.viewModel.getFirstContactFromArrayWithTime()
                 result = ("First element search time", number, time)
                 
             case .findFirstContactDictionary:
-                let (number, time) = self.viewModel.findFirstContactInDictionaryAndMeasureTime()
+                let (number, time) = self.viewModel.getFirstContactFromDictionaryWithTime()
                 result = ("First element search time", number, time)
                 
             case .findLastContactArray:
-                let (number, time) = self.viewModel.findLastContactInArrayAndMeasureTime()
+                let (number, time) = self.viewModel.getLastContactFromArrayWithTime()
                 result = ("Last element search time", number, time)
                 
             case .findLastContactDictionary:
-                let (number, time) = self.viewModel.findLastContactInDictionaryAndMeasureTime()
+                let (number, time) = self.viewModel.getLastContactFromDictionaryWithTime()
                 result = ("Last element search time", number, time)
                 
             case .searchNonExistingArray:
-                let (number, time) = self.viewModel.findNonExistingContactInArrayAndMeasureTime()
+                let (number, time) = self.viewModel.getNonExistingContactFromArrayWithTime()
                 result = ("Non-existing element search time", number, time)
                 
             case .searchNonExistingDictionary:
-                let (number, time) = self.viewModel.findNonExistingContactInDictionaryAndMeasureTime()
+                let (number, time) = self.viewModel.getNonExistingContactFromDictionaryWithTime()
                 result = ("Non-existing element search time", number, time)
             }
             

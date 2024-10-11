@@ -78,7 +78,7 @@ class ArrayViewController: UIViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArrayCell", for: indexPath) as? ArrayCollectionViewCell else {
                 return UICollectionViewCell()
             }
-            cell.configureCell(with: itemIdentifier.title, indexPath: indexPath.row)
+            cell.configureCell(with: itemIdentifier.title, at: indexPath.row)
             return cell
         }
     }
@@ -123,55 +123,55 @@ extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegat
             
             switch selectedItem {
             case .createArray:
-                let time = self.viewModel.createArrayTime()
+                let time = self.viewModel.getTimeForArrayCreation()
                 result = ("Creation time", time)
                 
             case .insertAtBeginningOneByOne:
-                let time = self.viewModel.insertAtBeginningOneByOneTime()
+                let time = self.viewModel.getTimeForInsertAtBeginningOneByOne()
                 result = ("Insertion time", time)
                 
             case .insertAtBeginning:
-                let time = self.viewModel.insertAtBeginningOnceTime()
+                let time = self.viewModel.getTimeForInsertAtBeginningOnce()
                 result = ("Insertion time", time)
                 
             case .insertInMiddleOneByOne:
-                let time = self.viewModel.insertInMiddleOneByOneTime()
+                let time = self.viewModel.getTimeForInsertInMiddleOneByOne()
                 result = ("Insertion time", time)
                 
             case .insertInMiddle:
-                let time = self.viewModel.insertInMiddleOnceTime()
+                let time = self.viewModel.getTimeForInsertInMiddleOnce()
                 result = ("Insertion time", time)
                 
             case .insertAtEndOneByOne:
-                let time = self.viewModel.insertAtEndOneByOneTime()
+                let time = self.viewModel.getTimeForInsertAtEndOneByOne()
                 result = ("Insertion time", time)
                 
             case .insertAtEnd:
-                let time = self.viewModel.insertAtEndOnceTime()
+                let time = self.viewModel.getTimeForInsertAtEndOnce()
                 result = ("Insertion time", time)
                 
             case .removeAtEndOneByOne:
-                let time = self.viewModel.removeAtEndOneByOneTime()
+                let time = self.viewModel.getTimeForRemoveAtEndOneByOne()
                 result = ("Removal time", time)
                 
             case .removeAtEnd:
-                let time = self.viewModel.removeAtEndOnceTime()
+                let time = self.viewModel.getTimeForRemoveAtEndOnce()
                 result = ("Removal time", time)
                 
             case .removeAtBeginningOneByOne:
-                let time = self.viewModel.removeAtBeginningOneByOneTime()
+                let time = self.viewModel.getTimeForRemoveAtBeginningOneByOne()
                 result = ("Removal time", time)
                 
             case .removeAtBeginning:
-                let time = self.viewModel.removeAtBeginningOnceTime()
+                let time = self.viewModel.getTimeForRemoveAtBeginningOnce()
                 result = ("Removal time", time)
                 
             case .removeInMiddleOneByOne:
-                let time = self.viewModel.removeInMiddleOneByOneTime()
+                let time = self.viewModel.getTimeForRemoveInMiddleOneByOne()
                 result = ("Removal time", time)
                 
             case .removeInMiddle:
-                let time = self.viewModel.removeInMiddleOnceTime()
+                let time = self.viewModel.getTimeForRemoveInMiddleOnce()
                 result = ("Removal time", time)
             }
             
