@@ -6,7 +6,6 @@ class MainViewController: UIViewController {
     
     // MARK: - Properties
     private let tableView = UITableView()
-    private let collections = ["Array", "Set", "Dictionary"]
     
     // MARK: - Lifecycle Methods
     override func viewDidLoad() {
@@ -31,7 +30,7 @@ class MainViewController: UIViewController {
             $0.edges.equalToSuperview()
         }
         
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CustomTableViewCell.self, forCellReuseIdentifier: "customCell")
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -40,16 +39,16 @@ class MainViewController: UIViewController {
 // MARK: - UITableViewDataSource
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return collections.count
+        return Collections.allCases.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = collections[indexPath.row]
-        cell.accessoryType = .disclosureIndicator
-        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "customCell", for: indexPath) as! CustomTableViewCell
+        let collection = Collections.allCases[indexPath.row]
+        cell.configure(with: collection.title)
         return cell
     }
+
 }
 
 // MARK: - UITableViewDelegate
@@ -57,21 +56,16 @@ extension MainViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
      
-        let selectedCollection = collections[indexPath.row]
+        let selectedCollection = Collections.allCases[indexPath.row]
         let destinationVC: UIViewController
-        
+        let title = "\(selectedCollection.title): \(Int.random(in: 0...9_999_999))"
         switch selectedCollection {
-        case "Array":
-            let title = ("Array: \(Int.random(in: 0...9_999_999))")
+        case .array:
             destinationVC = ArrayViewController(title)
-        case "Set":
-            let title = ("Set: \(Int.random(in: 0...9_999_999))")
+        case .set:
             destinationVC = SetViewController(title)
-        case "Dictionary":
-            let title = ("Dictionary: \(Int.random(in: 0...9_999_999))")
+        case .dictionary:
             destinationVC = DictionaryViewController(title)
-        default:
-            return
         }
 
         navigationController?.pushViewController(destinationVC, animated: true)
