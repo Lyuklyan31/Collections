@@ -8,7 +8,7 @@ class ArrayViewController: UIViewController {
     private var viewModel = ArrayViewModel()
     
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var dataSource: UICollectionViewDiffableDataSource<Int, CellButtons>!
+    private var dataSource: UICollectionViewDiffableDataSource<Int, ArrayCellButtons>!
     
     // MARK: - Initializer
     init(_ title: String) {
@@ -74,7 +74,7 @@ class ArrayViewController: UIViewController {
     
     // MARK: - Data Source Setup
     private func setupDataSource() {
-        dataSource = UICollectionViewDiffableDataSource<Int, CellButtons>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
+        dataSource = UICollectionViewDiffableDataSource<Int, ArrayCellButtons>(collectionView: collectionView) { collectionView, indexPath, itemIdentifier in
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ArrayCell", for: indexPath) as? ArrayCollectionViewCell else {
                 return UICollectionViewCell()
             }
@@ -85,14 +85,15 @@ class ArrayViewController: UIViewController {
 
     // MARK: - Snapshot Application
     private func applySnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<Int, CellButtons>()
+        var snapshot = NSDiffableDataSourceSnapshot<Int, ArrayCellButtons>()
         snapshot.appendSections([0])
-        let items = !viewModel.arraySnapshot.isEmpty ? CellButtons.allCases : [.createArray]
+        let items = !viewModel.arraySnapshot.isEmpty ? ArrayCellButtons.allCases : [.createArray]
         snapshot.appendItems(items, toSection: 0)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 }
 
+// MARK: - UICollectionViewDelegate & UICollectionViewDelegateFlowLayout
 extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     // MARK: - Collection View Cell Sizing
@@ -108,8 +109,9 @@ extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegat
         }
     }
     
+    // MARK: - Collection View Item Selection
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let selectedItem = CellButtons.allCases[indexPath.row]
+        let selectedItem = ArrayCellButtons.allCases[indexPath.row]
         
         guard let cell = collectionView.cellForItem(at: indexPath) as? ArrayCollectionViewCell else { return }
         
@@ -117,7 +119,6 @@ extension ArrayViewController: UICollectionViewDelegate, UICollectionViewDelegat
         cell.startLoading()
         
         DispatchQueue.global(qos: .userInitiated).async {
-            
             var result: (message: String, time: Double)
             
             switch selectedItem {

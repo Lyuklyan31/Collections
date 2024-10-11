@@ -7,9 +7,10 @@ struct ArrayOperationResult {
 
 class ArrayService {
     
-    // MARK: - Array Creation
-    var myArray = [Int]()
+    // MARK: - Properties
+    private var myArray = [Int]()
     
+    // MARK: - Array Creation
     @discardableResult
     func createArray() -> ArrayOperationResult {
         let startTime = DispatchTime.now()
