@@ -65,7 +65,7 @@ class DictionaryCollectionViewCell: UICollectionViewCell {
     }
     
     // MARK: -  Configuration Cell
-    func configureCell(with title: String, indexPath: Int) {
+    func configureCell(with title: String) {
         resultLabel.text = title
         resultLabel.textColor = .systemBlue
     }
