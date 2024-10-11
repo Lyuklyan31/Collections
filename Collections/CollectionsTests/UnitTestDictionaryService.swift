@@ -2,84 +2,61 @@ import XCTest
 @testable import Collections
 
 class DictionaryServiceTests: XCTestCase {
-    var service: DictionaryService!
+    var viewModel: DictionaryViewModel!
 
     override func setUp() {
         super.setUp()
-        service = DictionaryService()
+        viewModel = DictionaryViewModel()
     }
 
     override func tearDown() {
-        service = nil
+        viewModel = nil
         super.tearDown()
     }
 
-    // MARK: - Tests for Contact Creation
-    
-    func testCreateContactsArrayPerformance() async {
-        await service.createContactsArray()
-        XCTAssertEqual(service.array.count, 9_999_999)
+    // MARK: - Tests for Collection Creation
+
+    func testLoadingCollectionsPerformance() {
+        viewModel.loadCollections()
+        XCTAssertEqual(viewModel.arraySnapshot.count, 9_999_999)
+        XCTAssertEqual(viewModel.dictionarySnapshot.count, 9_999_999)
     }
 
-    func testCreateContactsDictionaryPerformance() async {
-        await service.createContactsDictionary()
-        XCTAssertEqual(service.dictionary.count, 9_999_999)
-    }
-
-    
     // MARK: - Tests for Contact Search
 
-    func testFindContactInArray() async {
-        await service.createContactsArray()
-        let result = await service.findContactByNameInArray(name: "Contact 1")
-      
-        let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
-        
-        XCTAssertEqual(resultNumber, "123-456-781")
+    func testFindFirstContactInArray() {
+        viewModel.loadCollections()
+        let result = viewModel.getFirstContactFromArrayWithTime()
+        XCTAssertEqual(result.contact, 1)
     }
 
-    func testFindContactInDictionary() async {
-        await service.createContactsDictionary()
-        let result = await service.findContactByNameInDictionary(name: "Contact 1")
-        
-        let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
-        
-        XCTAssertEqual(resultNumber, "123-456-781")
+    func testFindFirstContactInDictionary() {
+        viewModel.loadCollections()
+        let result = viewModel.getFirstContactFromDictionaryWithTime()
+        XCTAssertEqual(result.contact, 1)
     }
 
-    func testFindLastContactInArray() async {
-        await service.createContactsArray()
-        let result = await service.findContactByNameInArray(name: "Contact 9999999")
-        
-        let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
-        
-        XCTAssertEqual(resultNumber, "123-456-789999999")
+    func testFindLastContactInArray() {
+        viewModel.loadCollections()
+        let result = viewModel.getLastContactFromArrayWithTime()
+        XCTAssertEqual(result.contact, 9_999_999)
     }
 
-    func testFindLastContactInDictionary() async {
-        await service.createContactsDictionary()
-        let result = await service.findContactByNameInDictionary(name: "Contact 9999999")
-       
-        let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
-        
-        XCTAssertEqual(resultNumber, "123-456-789999999")
-    }
-    
-    func testFindNonExistingContactInArray() async {
-        await service.createContactsArray()
-        let result = await service.findContactByNameInArray(name: "Contact 1 0000000")
-        
-        let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
-        
-        XCTAssertEqual(resultNumber, "0")
+    func testFindLastContactInDictionary() {
+        viewModel.loadCollections()
+        let result = viewModel.getLastContactFromDictionaryWithTime()
+        XCTAssertEqual(result.contact, 9_999_999)
     }
 
-    func testFindNonExistingContactInDictionary() async {
-        await service.createContactsDictionary()
-        let result = await service.findContactByNameInDictionary(name: "Contact 1 0000000")
-        
-        let resultNumber = result.components(separatedBy: "Result number: ").last ?? ""
-        
-        XCTAssertEqual(resultNumber, "0")
+    func testFindNonExistingContactInArray() {
+        viewModel.loadCollections()
+        let result = viewModel.getNonExistingContactFromArrayWithTime()
+        XCTAssertEqual(result.contact, 0)
+    }
+
+    func testFindNonExistingContactInDictionary() {
+        viewModel.loadCollections()
+        let result = viewModel.getNonExistingContactFromDictionaryWithTime()
+        XCTAssertEqual(result.contact, 0)
     }
 }
